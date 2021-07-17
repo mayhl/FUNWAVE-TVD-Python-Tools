@@ -1,0 +1,5 @@
+﻿Name,Full Name,Datatype,Category,Is Required,Default Value,Description
+DX,DX,Float,Grid,Yes,None,Spatial resolution in the x direction
+DY,DY,Float,Grid,Yes,None,Spatial resolution in the y direction
+nGlob,nGlob,Integer,Grid,Yes,None,
+mGlob,mGlob,Integer,Grid,Yes,None,
