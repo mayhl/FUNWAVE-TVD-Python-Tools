@@ -28,7 +28,7 @@ class Category(Enum):
     LAGRANGIAN = 8
     
 class Parameter:
-    def __init__(self, name, fullname, datatype, category, description, isRequired, defauleValue):
+    def __init__(self, name, fullname, datatype, category, isRequired, defaultValue, description):
 
         self.name         = name
         self.fullname     = fullname
@@ -39,7 +39,7 @@ class Parameter:
         self.defaultValue = defaultValue        
                 
 class InputFile:
-    
+
     @property
     def path():
         return self._path
