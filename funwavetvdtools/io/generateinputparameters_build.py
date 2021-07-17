@@ -9,7 +9,7 @@ from inputfile import formatValueByDataType
 
 from funwavetvdtools.misc.justifylines import JustifyLines
 
-csvFilePath='parameterList.csv'
+csvFilePath='inputparameters.csv'
 outFilePath = 'inputparameters.py'
 df = pd.read_csv(csvFilePath)
 
