@@ -36,16 +36,68 @@ class Parameter:
         self.category     = category
         self.description  = description
         self.isRequired   = isRequired
-        self.defaultValue = defaultValue        
-                
+        self.defaultValue = defaultValue
+        self.value        = None
+        
 class InputFile:
-
-    @property
-    def path():
-        return self._path
     
-    def __init__(self, path):
+    def __init__(self, *args):
+    
+        # Getting parameters from dynamically generated file 
+        from inputparameters import values as parameters
         
-        self._path = path 
-        raise Exception("Implement class")
+        # Checking if path argument has been specified 
+        if len(args) > 1: raise Exception( 'Only zero or one arguments are allowed in constructor.' ) 
         
+        if len(args) == 1:
+            self.__isRead = True 
+            self._path = args[0] 
+        else:
+            self.__isRead = False 
+            self._path = None
+            # Opening inpunt file before interating through 
+            fh = None
+        
+        # Checking if parameter members have been constructed
+        if hasattr(type(self),'__generated__'):
+            # Sets parameter values to default values or reads values from file if path is specified
+            for parameter in parameters: self.__setParameter(parameter, fh)
+        else:
+            # Add parameter members 
+            for parameter in parameters: self.__addParameter(parameter, fh)
+            setattr(type(self),'__generated__',True)  
+            
+        # Closing file handler if it has been open (path specified)
+        if self.__isRead: fh.close()
+            
+    @property 
+    def path(): return self._path
+    
+    def __addParameter(self, parameter, fh):   
+        
+        # Setting parameter value to default or reading from file if path is specified
+        self.__setParameter(parameter, fh)
+    
+        # Copying parameter to 'private' memeber
+        varName    = "_"   + parameter.name
+        setattr(self, varName , parameter)    
+        
+        # Setting read-only property to quickly access parameter value
+        getterName = parameter.name
+        setattr(type(self), getterName, property(lambda self: getattr(getattr(self, varName),'value')))
+        
+        # Creating setter for parameter value
+        setterName = 'set' + parameter.name[0].upper() +  parameter.name[1::] 
+        setattr(type(self), setterName, lambda self, val : setattr(getattr(self, varName),'value', val))
+
+    def __setParameter(self, parameter, fh):   
+        
+        # Setting value to default value 
+        if not self.__isRead:
+            parameter.value = parameter.defaultValue
+            return
+          
+        raise Exception('Add input file read code.')
+            
+            
+            
