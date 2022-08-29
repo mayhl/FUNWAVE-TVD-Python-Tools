@@ -97,8 +97,7 @@ def station_subplot(eta, u, v, time, fig_title = None):
     # Append Trace To Figure 
     fig.append_trace(trace3,3,1)
 
-    # ------ TEMP LINE -------
-    fig.show()
+    return fig
 
 def station_var_plot(yData, time, fig_title = None, yLabel = None, fig_in = None):
     ''' Function for plotting FUNWAVE station output varaible.
@@ -153,8 +152,6 @@ def station_var_plot(yData, time, fig_title = None, yLabel = None, fig_in = None
     # Append Trace To Figure 
     fig.append_trace(trace1)
 
-    # ------ TEMP LINE -------
-    fig.show()
     return fig
 
 def surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=None): 
@@ -238,8 +235,6 @@ def surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=No
     else:
         emess("Error: Unsupported trace_type. Please use: heatmap, contour or surface3D")
 
-    # ------ TEMP LINE -------
-    fig.show()
     return fig
 
 def surface_plot_overlay(surface_array, topo_bathy, mask, x_scale=None, y_scale=None, z_scale=None, fig_title=None):
@@ -319,6 +314,8 @@ def surface_plot_overlay(surface_array, topo_bathy, mask, x_scale=None, y_scale=
     # Add 3-D Surface Trace
     fig.add_trace(go.Surface(z=topo_bathy*-1, colorscale='deep'))
     fig.add_trace(go.Surface(z=surface_array, colorscale='deep',connectgaps=False))
+
+    return fig
 
 def quiver_plot(xx, yy, u, v, mask, quiver_norm, quiver_scale, axes_ratio, fig_title=None, bottom_surface=None, bottom_trace=None, color_map=None):
     '''Function for overlaying quiver plot on 2D surface. 
@@ -419,7 +416,4 @@ def quiver_plot(xx, yy, u, v, mask, quiver_norm, quiver_scale, axes_ratio, fig_t
     # Append Quiver Trace 
     fig.add_trace(q_obj)
 
-    #------ TEMP LINE -----
-    # Show Figure
-    fig.show()
     return fig
