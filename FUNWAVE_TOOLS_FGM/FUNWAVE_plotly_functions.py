@@ -14,7 +14,7 @@ import plotly.figure_factory as ff
 # Collection of plotly ploting functions. Included functions:
 #   1. 1D Plot: Station Files 
 #       - station_subplot(eta, u, v, time, fig_title = None) -> Plots Eta, u & v vs time in a single figure for a given station.
-#       - station_var_plot(yData, time, fig_title = None, yLabel = None, fig_in = None) -> Plots single variable from a given station. Also supports appending data by using fig_in.
+#       - station_var_plot(yData, time, fig_title = None, y_label = None, fig_in = None) -> Plots single variable from a given station. Also supports appending data by using fig_in.
 #   2. 2D/3D Plot: Station Files      
 #       - surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=None) -> Plots given FUNWAVE mesh data. Supports 3 trace types: heatmap, contour, and surface3D.
 #       - surface_plot_overlay(surface_array, topo_bathy, mask, x_scale=None, y_scale=None, z_scale=None, fig_title=None) -> Function for ploting FUNWAVE mesh data overlayed on topo/bathy.
@@ -37,7 +37,7 @@ def station_subplot(eta, u, v, time, fig_title = None):
     # ------ ARGUMENTS HANDELING ------
     if fig_title is None:
         fig_title = "FUNWAVE Station Data"
-    elif isinstance(fig_title,'str') is False:
+    elif isinstance(fig_title,str) is False:
         emess('Error: Optional input argument fig_title must be a string')
 
     # ------ FIGURE LAYOUT -------
@@ -96,29 +96,34 @@ def station_subplot(eta, u, v, time, fig_title = None):
         ) 
     # Append Trace To Figure 
     fig.append_trace(trace3,3,1)
-
     return fig
 
-def station_var_plot(yData, time, fig_title = None, yLabel = None, fig_in = None):
+def station_var_plot(yData, time, station_name, fig_title=None, y_label=None, fig_in=None):
     ''' Function for plotting FUNWAVE station output varaible.
   
-    :param yData:       FUNWAVE station file variable data.
-    :type  yData:       ndarray
-    :param time:        Time data from FUNWAVE station file.
-    :type  time:        ndarray
-    :param fig_title:   Figure title string.
-    :type  fig_title:   str
-    :param yLabel:      Axes y label string.
-    :type  yLabel:      str
+    :param yData:        FUNWAVE station file variable data.
+    :type  yData:        ndarray
+    :param time:         Time data from FUNWAVE station file.
+    :type  time:         ndarray
+    :param fig_title:    Figure title string.
+    :type  fig_title:    str
+    :param y_label:      Axes y label string.
+    :type  y_label:      str
     :param fig_in:       Plotly figure object. Supplying this input will cause new trace to be added to figure.
     :type  fig_in:       obj
+    :param station_name: Appended data name. This will be used to populate legend.
+    :type  station_name: str
     '''
     # ------ ARGUMENTS HANDELING ------
     if fig_title is None:
         fig_title = "FUNWAVE Station Data"
-    elif isinstance(fig_title,'str') is False:
+    elif isinstance(fig_title,str) is False:
         emess('Error: Optional input argument fig_title must be a string')
-
+    # y_label
+    if y_label is None:
+        y_label = "y_data"
+    elif isinstance(y_label,str) is False:
+        emess('Error: Optional input argument y_label must be a string')
     # ------ FIGURE LAYOUT -------
     if fig_in is None:
         # Initialize Figure 
@@ -135,23 +140,29 @@ def station_var_plot(yData, time, fig_title = None, yLabel = None, fig_in = None
                 size=18)
         )
         # Update Y Axes Labels
-        fig.update_yaxes(title_text=yLabel)
+        fig.update_yaxes(title_text=y_label)
         # Update X Axes Labels
         fig.update_xaxes(title_text="Time [s]")
     else:
         # Copy Figure Object 
         fig = fig_in
+        # Missing Station Name Failsafe 
+        if isinstance(station_name,str) is False:
+            emess('Error: Optional input argument station_name must be a string')
+        
 
     # ------ POPULATE TRACES -------
     # Define Trace 1: Eta [m]
     trace1 = go.Scatter(
         x=time, y=yData,
         mode='lines',
+        name=station_name,
         line=dict(width=2)
         )
     # Append Trace To Figure 
-    fig.append_trace(trace1)
+    fig.add_trace(trace1)
 
+    # ------ TEMP LINE -------
     return fig
 
 def surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=None): 
@@ -177,7 +188,7 @@ def surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=No
     # fig_title Error
     if fig_title is None:
         fig_title = "FUNWAVE Surface Data"
-    elif isinstance(fig_title,'str') is False:
+    elif isinstance(fig_title,str) is False:
         emess('Error: Optional input argument fig_title must be a string')
 
     # Color Map Assignment 
@@ -219,7 +230,10 @@ def surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=No
         fig.add_trace(go.Heatmap(z=surface_array, colorscale=cMap))
     elif trace_type == "contour":
         # Add Contour Trace
-        fig.add_trace(go.Contour(z=surface_array, colorscale=cMap, showlines=True))
+        fig.add_trace(go.Contour(z=surface_array, colorscale=cMap,
+            contours=dict(coloring='fill',showlabels=True)
+            )
+        )
     elif trace_type == "surface3D":
         # Update 3D scene options 
         fig.update_scenes(
@@ -235,6 +249,7 @@ def surface_plot(surface_array, is_bathy, trace_type, fig_title=None, z_scale=No
     else:
         emess("Error: Unsupported trace_type. Please use: heatmap, contour or surface3D")
 
+    # ------ TEMP LINE -------
     return fig
 
 def surface_plot_overlay(surface_array, topo_bathy, mask, x_scale=None, y_scale=None, z_scale=None, fig_title=None):
@@ -256,7 +271,7 @@ def surface_plot_overlay(surface_array, topo_bathy, mask, x_scale=None, y_scale=
     # fig_title Error
     if fig_title is None:
         fig_title = "FUNWAVE Surface Data"
-    elif isinstance(fig_title,'str') is False:
+    elif isinstance(fig_title,str) is False:
         emess('Error: Optional input argument fig_title must be a string')
 
     # x_scale 
@@ -351,7 +366,7 @@ def quiver_plot(xx, yy, u, v, mask, quiver_norm, quiver_scale, axes_ratio, fig_t
     if fig_title is None: # No Title Specifed 
         # Use Generic Figure Title 
         fig_title = "FUNWAVE Surface Data"
-    elif isinstance(fig_title,'str') is False: # Verify Requested Title Is A String
+    elif isinstance(fig_title,str) is False: # Verify Requested Title Is A String
         # Throw Dependency Error 
         emess('Error: Optional input argument fig_title must be a string')
 
@@ -383,7 +398,7 @@ def quiver_plot(xx, yy, u, v, mask, quiver_norm, quiver_scale, axes_ratio, fig_t
             # Go To Default Value
             bottom_trace='heatmap'
         else: # Check If Specified Surface Trace Is Valid
-            if bottom_trace is ['contour','heatmap']:
+            if bottom_trace in ['contour','heatmap']:
                 pass
             else: # Invalid Trace Type
                 # Throw Dependency Error 
@@ -391,13 +406,19 @@ def quiver_plot(xx, yy, u, v, mask, quiver_norm, quiver_scale, axes_ratio, fig_t
     
     # ------ FIGURE LAYOUT -------
     # Compute U,V Magnitude 
-    mag = np.sqrt(u**2 + v**2)
+    mag = np.sqrt(np.add(u**2,v**2))
     # Normalize Quiver
     if quiver_norm is True:
+        # Make 0 Values NaNs
+        mag_nan = mag
+        mag_nan[mag_nan==0] = np.nan
         # Normalize U
-        u = u/mag
+        u = u/mag_nan
+        u[np.isnan(u)] = 0
         # Normalize V
-        v = v/mag
+        v = v/mag_nan
+        v[np.isnan(v)] = 0
+
     # Create Quiver Object
     q_obj = ff.create_quiver(xx, yy, u, v, scale = quiver_scale, scaleratio = axes_ratio)
     # Check If bottom_surface Exist 
