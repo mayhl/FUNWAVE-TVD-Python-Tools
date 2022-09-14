@@ -1,0 +1,9 @@
+name: Update Version
+on:
+    push:
+jobs:
+    steps:
+        - run: ./.github/.verifyVersion.sh
+          shell: bash
+
+
