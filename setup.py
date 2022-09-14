@@ -10,9 +10,10 @@ with open('LICENSE') as f:
 with popen('git describe') as s:
      version= s.read().strip()
 
+pkg_name = 'funwavetvdtools'
 
 setup(
-    name='funwavetvdtools',
+    name=pkg_name,
     version=version,
     description='Tools for preprocessing and postprocessing data for FUNWAVE-TVD',
     long_description=readme,
@@ -20,7 +21,7 @@ setup(
     author_email='michaelangelo.yh.lam@gmail.com',
     url='https://github.com/mayhl/FUNWAVE-TVD-Python-Tools',
     license=license,
-    package_dir = {'': "funwavetvdtools" },
-    packages=find_packages(where="funwavetvdtools")
+    package_dir = {pkg_name: "src" },
+    packages= [ pkg_name + "." + p  for p in find_packages(where="src") ] #find_packages(where="src")
 )
 
