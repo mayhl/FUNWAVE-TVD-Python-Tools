@@ -9,7 +9,7 @@ jobs:
         shell: bash
       - run: echo $(ls)
         shell: bash
-      - run: sh /home/runner/work/FUNWAVE-TVD-Python-Tools/FUNWAVE-TVD-Python-Tools/.verifyVersion.sh
+      - run: sh /home/runner/work/FUNWAVE-TVD-Python-Tools/.verifyVersion.sh
         shell: bash
 
 
