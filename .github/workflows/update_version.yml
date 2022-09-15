@@ -1,11 +1,11 @@
 name: Update Version
 on:
-    push:
+  push:
 jobs:
-    update-version:
+  update-version:
     runs-on: ubuntu-latest
     steps:
-        - run: ./.github/.verifyVersion.sh
-          shell: bash
+      - run: ./.github/.verifyVersion.sh
+        shell: bash
 
 
