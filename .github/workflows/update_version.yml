@@ -2,6 +2,7 @@ name: Update Version
 on:
     push:
 jobs:
+    runs-on: ubuntu-latest
     steps:
         - run: ./.github/.verifyVersion.sh
           shell: bash
