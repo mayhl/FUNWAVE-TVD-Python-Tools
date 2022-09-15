@@ -9,7 +9,7 @@ jobs:
         shell: bash
       - run: echo $(ls)
         shell: bash
-      - run: .verifyVersion.sh
+      - run: bash .verifyVersion.sh
         shell: bash
 
 
