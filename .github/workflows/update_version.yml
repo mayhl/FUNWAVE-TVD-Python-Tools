@@ -7,7 +7,7 @@ jobs:
     steps:
       - run: pwd
         shell: bash
-      - run: ls
+      - run: echo $(ls)
         shell: bash
       - run: sh ${GITHUB_WORKSPACE}/.verifyVersion.sh
         shell: bash
