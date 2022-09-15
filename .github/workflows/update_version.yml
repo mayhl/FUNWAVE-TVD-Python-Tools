@@ -7,7 +7,7 @@ jobs:
     steps:
       - run: pwd
         shell: bash
-      - run: echo $(ls)
+      - run: ls -la
         shell: bash
       - run: bash .verifyVersion.sh
         shell: bash
