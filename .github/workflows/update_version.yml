@@ -5,6 +5,7 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - run: pwd
         shell: bash
       - run: ls -la ..
