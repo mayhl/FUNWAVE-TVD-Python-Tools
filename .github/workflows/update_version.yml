@@ -5,7 +5,7 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     steps:
-      - run: .github/.verifyVersion.sh
+      - run: ${GITHUB_WORKSPACE}/.verifyVersion.sh
         shell: bash
 
 
