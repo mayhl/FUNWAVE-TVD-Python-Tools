@@ -1,5 +1,5 @@
 
-
+PYTHON=python3
 PIP=pip
 PKG_NAME='funwavetvdtools'
 
@@ -9,6 +9,12 @@ uninstall:
 install: uninstall
 	${PIP} install .
 
+update_pypi:
+	${PYTHON} -m ${PIP} install --upgrade build twine
+
+upload_pypi_test:
+	${PYTHON} -m build
+	${PYTHON} -m twine upload --repository testpypi dist/*
 
 # Creating a symbolic link to src directory since installing package
 # in developer mode use src as the package name instead of PKG_NAME. 
