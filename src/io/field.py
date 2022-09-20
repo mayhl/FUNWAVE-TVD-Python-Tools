@@ -1,6 +1,7 @@
 
 
 from funwavetvdtools.error import FunException
+import funwavetvdtools.validation as fv
 
 import os
 import mimetypes
@@ -15,7 +16,7 @@ def read(fpath, mglob=None, nglob=None, stride=1):
 
     mtype, _ = mimetypes.guess_type(fpath, strict=True)
 
-    _check_positive_def_int(stride, 'stride')
+    stride = fv.convert_pos_def_int(stride, 'stride')
 
     # Detecting if file is a binary file or text file
     if mtype == 'text/plain':
@@ -26,29 +27,20 @@ def read(fpath, mglob=None, nglob=None, stride=1):
     else:
         brief = "Unexpected Error"
         desc = "Can not read field data, detect mime type '%s' for file '%s'." % ( mtype, fpath)  
-
-def _check_positive_def_int(val, val_str):
-
-    if val != int(val):
-        brief = "Invalid Argument"
-        desc = "Input argument %s=%f is not an integer." % (val_str, val)
-        raise FunException(brief, desc)
-
-    if val < 1:
-        brief = "Invalid Argument"
-        desc = "Input argument %s=%d is not postive." % (val_str, val)
         raise FunException(brief, desc)
 
 
 def _check_size(val_arg, val_read, val_str, fpath):
 
-    _check_positive_def_int(val_arg, val_str)
+    val_arg = fv.convert_pos_def_int(val_arg, val_str)
     
     if val_arg > val_read:
         brief = "Invalid Argument"
-        desc = "Input argument %s=%d is larger than dimension read, %s=%d, in the " \
+        desc = "Input argument %s=%d is larger than dimension read, %s=%d, in " \
                 "text file '%s'." % (val_str, val_arg, val_str, val_read, fpath)
         raise FunException(brief, desc)
+
+    return val_arg
 
 
 def _read_text(fpath, mglob, nglob, stride):
@@ -57,11 +49,11 @@ def _read_text(fpath, mglob, nglob, stride):
     n, m = data.shape
 
     if mglob is not None:
-        _check_size(mglob, m, "mglob", fpath)
+        mglob = _check_size(mglob, m, "mglob", fpath)
         data = data[:,0:mglob]
 
     if nglob is not None: 
-        _check_size(nglob, n, "nglob", fpath)
+        nglob = _check_size(nglob, n, "nglob", fpath)
         data = data[0:nglob,:]
 
     return data[::stride,::stride]
@@ -79,13 +71,20 @@ def _read_binary(fpath, mglob, nglob, stride):
         desc = "Input argument nglob needs to be specifed for binary data file '%s'." % fpath
         raise FunException(brief, desc)
 
-    _check_positive_def_int(mglob, 'mglob')
-    _check_positive_def_int(nglob, 'nglob')
+
+    mglob = fv.convert_pos_def_int(mglob, 'mglob')
+    nglob = fv.convert_pos_def_int(nglob, 'nglob')
+
+#    _check_positive_def_int(mglob, 'mglob')
+#    _check_positive_def_int(nglob, 'nglob')
+
+    # NOTE: May need to revise check for very large files 
 
     fsize = os.path.getsize(fpath)
     fsize_per_item = fsize/(mglob*nglob)
 
     # Assuming little-endian float or double
+
     if fsize_per_item == 8:
         dtype = '<f8'
     elif fsize_per_item == 4:
