@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 
 # -- Project information -----------------------------------------------------
@@ -24,7 +24,7 @@ author = 'Michael-Angelo Y.-H. Lam'
 # The full version, including alpha/beta/rc tags
 release = '2022'
 
-
+#modindex_common_prefix = ['src']
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
