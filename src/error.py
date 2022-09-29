@@ -15,7 +15,7 @@ class FunException(Exception):
             self._base = base
         else:
             self._base = None
-            super().__init__(self._brief)
+            super().__init__(self._desc)
 
     @classmethod
     def is_same(cls, err): return type(err) is cls
