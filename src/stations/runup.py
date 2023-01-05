@@ -47,13 +47,22 @@ def _compute_single(x, h, eta, r_depth=None):
     w_depth = eta + h    
 
 
-    if m > 0: # slopes up
-        idx = np.argmax(w_depth>=r_depth)    
+    r_depth = 0.002
+    if m < 0: # slopes up
+        idx = np.argmax(w_depth>=r_depth)
+        if idx == 0: return eta[0], x[0], r_depth  
     else: # slopes down 
         idx = np.argmin(w_depth>=r_depth)
 
-    runup   = eta[idx]
-    runup_x = x[idx]
+
+    si = idx - 1
+    ei = idx + 2
+
+    runup = np.interp(r_depth, w_depth[si:ei], eta[si:ei])
+    runup_x = np.interp(r_depth, w_depth[si:ei], x[si:ei])
+
+    #runup   = eta[idx]
+    #runup_x = x[idx]
 
     return runup, runup_x, r_depth 
 
@@ -165,8 +174,12 @@ def compute_stats(runup, upper_centile=2, peak_width=2):
 
     centile=100-upper_centile
     peak_idxs, _ = find_peaks(runup, width=peak_width)
-    r_percent = np.percentile(runup[peak_idxs], centile)
-    return r_percent 
+    peaks = runup[peak_idxs]
+
+    if len(peaks) > 0:
+        return np.percentile(runup[peak_idxs], centile)
+    else:
+        return 0
 
 
 

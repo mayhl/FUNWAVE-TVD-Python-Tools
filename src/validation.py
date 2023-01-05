@@ -7,7 +7,7 @@ def check_fpath(fpath, name):
     
     if not os.path.isfile(fpath):
         brief = "Invalid File Path"
-        desc = "Can not read %s file as file path does not exists or is invalid. Path: '%s'." % fpath
+        desc = "Can not read file as file path does not exist or is invalid. Path: '%s'." % fpath
         raise FunException(brief, desc)
 
 
