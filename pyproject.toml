@@ -1,6 +1,33 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
+requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "funwavetvdtools"
+version = "0.1.0"
+description = "Tools for preprocessing and postprocessing data for FUNWAVE-TVD"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "BSD-2-Clause"}
+keywords = ["funwave-tvd"]
+authors = [
+   {name="Michael-Angelo Y.-H. Lam"  , email="michaelangelo.yh.lam@gmail.com"},
+   {name="Fabian Garcia Moreno,"     , email="test@gmail.com"},
+   {name="Gabriela Salgado-Dominguez", email="test@gmail.com"}
+]
+maintainers = [
+   {name="Michael-Angelo Y.-H. Lam"  , email="michaelangelo.yh.lam@gmail.com"}
+]
+dependencies = [
+]
+
+[project.urls]
+documentation = "https://mayhl.github.io/FUNWAVE-TVD-Python-Tools/"
+repository = "https://github.com/mayhl/FUNWAVE-TVD-Python-Tools"
+
+[tool.setuptools]
+package-dir = {"funwavetvdtools" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"] 
+
