@@ -32,6 +32,17 @@ def check_types(objs, cls, name):
         if t_obj is not cls:
             raise FunException(brief, desc % (i, name, cls, t_obj))
 
+def check_subclass(obj, cls, name):
+
+    t_obj = type(obj)    
+
+    if not issubclass(t_obj, cls):
+        brief = "Invalid Arugment"
+        desc = "Input argument '%s' must be a subclass of %s, got %s." % (name, cls, t_obj) 
+        raise FunException(brief, desc)
+
+
+
 def check_ndarray(obj, ndim, name):
 
     check_type(obj, np.ndarray, name)
