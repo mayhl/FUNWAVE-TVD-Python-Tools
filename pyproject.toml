@@ -25,9 +25,6 @@ dependencies = [
 documentation = "https://mayhl.github.io/FUNWAVE-TVD-Python-Tools/"
 repository = "https://github.com/mayhl/FUNWAVE-TVD-Python-Tools"
 
-[tool.setuptools]
-package-dir = {"funwavetvdtools" = "src"}
-
 [tool.setuptools.packages.find]
 where = ["src"] 
 
