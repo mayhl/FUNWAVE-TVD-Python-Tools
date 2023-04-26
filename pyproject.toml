@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "funwavetvdtools"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tools for preprocessing and postprocessing data for FUNWAVE-TVD\""
 authors = [
    "Michael-Angelo Y.-H. Lam <michaelangelo.yh.lam@gmail.com>",
@@ -19,8 +19,20 @@ documentation = "https://mayhl.github.io/FUNWAVE-TVD-Python-Tools/"
 repository = "https://github.com/mayhl/FUNWAVE-TVD-Python-Tools"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<3.12"
+numpy = "^1.24.3"
+scipy = "^1.10.1"
+tqdm = "^4.65.0"
+bokeh = "^3.1.0"
 
+[tool.poetry.group.dev.dependencies]
+black = "^21.9b0"
+pre-commit = "^2.15.0"
+isort = "^5.9.3"
+autoflake = "^1.4"
+
+[tool.poetry2conda]
+name = "funwavetvdtools"
 
 [build-system]
 requires = ["poetry-core"]
