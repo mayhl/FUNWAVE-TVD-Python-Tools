@@ -3,7 +3,7 @@ from funwavetvdtools.error import FunException
 import funwavetvdtools.validation as fv
 
 import funwavetvdtools.stations.runup as ru
-
+import funwavetvdtools.stations.overtopping as ot
 import numpy as np
 import os 
 import copy
@@ -15,7 +15,7 @@ class Station():
 
         self._fpath = Station.get_file_path(output_dir, number)
         self._number = number 
- 
+        
         self._i = int(i)
         self._j = int(j)
 
@@ -89,9 +89,8 @@ class Station():
 
 
         except Exception as e:
-            brief = 'File Read Error'
-            desc = "Could not read station file '$s'. See traceback for more details." % fpath 
-            raise FunException(brief, desc, e)
+            msg = "Could not read station file '$s'. See traceback for more details." % fpath 
+            raise FunException(msg, e)
 
     @property
     def eta(self):
@@ -136,11 +135,16 @@ class Station():
     @property
     def h(self):
         if self._h is None:
-            brief = 'Station depth was not set.'
-            desc = "Can not access station depth. No batheymetry files was passed to class constructor." 
-            raise FunException(brief, desc, e)
+            msg = "Can not access station depth. No bathymetry data entered." 
+            raise FunException(msg, ReferenceError)
 
         return self._h
+    
+    
+    def compute_overtoping(self, min_depth, t_min=None, t_max=None):
+        return ot.compute_flux(self.t, self.h, min_depth, t_min, t_max)
+        
+        
 
 class Stations():
 
@@ -166,9 +170,8 @@ class Stations():
             data = np.loadtxt(fpath)
 
         except Exception as e:
-            brief = 'File Read Error'
-            desc = "Could not read stations file '$s'. See traceback for more details." % fpath
-            raise FunException(brief, desc, e)
+            msg = "Could not read stations file '$s'. See traceback for more details." % fpath
+            raise FunException(msg, e)
 
         return list(zip(data[:,0], data[:,1]))
         
@@ -215,10 +218,9 @@ class Profile(Stations):
         jL = max(j_idxs) - min(j_idxs)
 
         if jL > 0 and iL > 0:
-            brief = "Can Not Generate Stations Profile"
-            desc = "Can not generate stations profile in mode 'stations' as stations points " \
+            msg = "Can not generate stations profile in mode 'stations' as stations points " \
                    "not aligned in the x or y axis. "
-            raise FunException(brief, desc)
+            raise FunException(msg, ValueError)
 
         x, y = zip(*self._raw.locations)
         x = list(x)
@@ -231,10 +233,9 @@ class Profile(Stations):
         diff = np.diff(s)
 
         if not (np.all(diff>0) or np.all(diff<0)):
-            brief = "Can Not Generate Stations Profile"
-            desc = "Can not generate stations profile in mode 'stations' as stations locations are not strictly " \
-                   "increasing or decreasing in either the %s direction." % ( 'x' if is_x_prof else "y") 
-            raise FunException(brief, desc)
+            msg = "Can not generate stations profile in mode 'stations' as stations locations are not strictly " \
+                   "increasing or decreasing in the %s direction." % ( 'x' if is_x_prof else "y") 
+            raise FunException(msg, ValueError)
 
         self._s = s
         self._list = self._raw._list
@@ -253,9 +254,8 @@ class Profile(Stations):
 
         ndims = numbers.ndim 
         if ndims != 1:
-            brief = "Invalid Argument" 
             desc = "The number of dimensions in input argument numbers must be 1, got '%s'." % ndims
-            raise FunException(brief, desc)
+            raise FunException(msg, ValueError)
 
         self._raw = copy.copy(stations)
         self._raw._list = [ stations.list[n-1] for n in numbers]
@@ -267,9 +267,8 @@ class Profile(Stations):
         elif mode == 'specifed':
             self.__check_profile_specifed(s)
         else:
-            brief="Invalid Stations Profile Mode"
-            desc="Invalid mode '%s' selected. Valid modes are 'stations', 'best', 'specifed']." % mode
-            raise FunException(brief, desc)
+            msg = "Invalid mode '%s' selected. Valid modes are 'stations', 'best', 'specifed']." % mode
+            raise FunException(msg, ValueError)
 
 
     def _prep_runup_input(self):
@@ -306,9 +305,8 @@ class Profile2(Stations):
             coeffs = np.linalg.solve(a, b)
         except np.linalg.LinAlgError: pass
         except Exception as e:
-            brief = 'test'
-            desc = 'test'
-            raise FunException(brief, desc, e)
+            msg = 'test'
+            raise FunException(msg, e)
         else:
             return idxs, coeffs
             
@@ -403,9 +401,8 @@ def _try_linalg_solve(a, b):
     except np.linalg.LinAlgError: pass
 
     except Exception as e:
-        brief = 'test'
-        desc = 'test'
-        raise FunException(brief, desc, e)
+        msg = 'test'
+        raise FunException(msg, e)
 
     else:
         return idxs, coeffs

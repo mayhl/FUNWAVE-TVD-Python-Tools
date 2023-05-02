@@ -4,9 +4,8 @@ import traceback
 
 class FunException(Exception):
 
-    def __init__(self, brief, desc, base=None): 
-        self._brief = brief
-        self._desc = desc
+    def __init__(self, msg, base=None): 
+        self._msg 
 
         self._is_base = base is not None
 
@@ -25,9 +24,8 @@ class FunException(Exception):
 
         # Converting Exception to FunException for json generation 
         if not cls.is_same(exception):
-            brief = 'Unexpected Error'
-            desc = "An unexpected error has occured, see trace back for more details." 
-            exception = cls(brief, desc, exception)
+            msg = 'Unexpected Error'
+            exception = cls(msg, exception)
 
         fpath = os.path.join(output_dir, 'error.json')
         exception.write_json(fpath)
@@ -40,9 +38,9 @@ class FunException(Exception):
         tb = traceback.TracebackException.from_exception(ex).format() 
 
         err_dict = {
-            'Brief'	     : self._brief,
-	        'Description': self._desc,
-            'Traceback'  : ''.join(tb)
+            'Message'   : self._msg,
+	        'Type'      : self.__class__.__name__,
+            'Traceback' : ''.join(tb)
 	    }
 	    
         with open(path, 'w') as fh: json.dump(err_dict, fh, indent=4)

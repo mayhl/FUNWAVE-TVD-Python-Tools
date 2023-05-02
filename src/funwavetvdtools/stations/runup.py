@@ -30,11 +30,10 @@ def _compute_single(x, h, eta, r_depth=None):
     nx = len(x)
 
     if not _all_same([ne, nh, nx]):
-        brief = 'Invalid Array Sizes'
-        desc = "The length of the input arrays are not the same, " \
-                    "the lengths of 'x', 'h', and 'eta' are %d, %d, and %d" \
-                 "respectively." % ( nx, nh, ne)
-        raise FunException(brief, desc)    
+        msg = "The length of the input arrays are not the same, " \
+                "the lengths of 'x', 'h', and 'eta' are %d, %d, and %d" \
+                "respectively." % ( nx, nh, ne)
+        raise FunException(msg, ValueError)    
 
     n = ne 
 
@@ -76,10 +75,9 @@ def _compute_timeseries(x, h, eta, r_depth=None):
 
     if ndh == 2:
         if not _all_same([shph, shpe]):
-            brief = "Invalid Array Sizes"
-            desc = "The dimensions of the arrays do not match. The dimensions of 'x', 'h', and 'eta' " \
+            msg = "The dimensions of the arrays do not match. The dimensions of 'x', 'h', and 'eta' " \
                     "are (%d, %d)  and (%d, %d), respectively." % ( shph + shpe)
-            raise FunException(brief, desc)
+            raise FunException(msg, TypeError)
         else:
             npts, nt = shpe
     else:
@@ -87,18 +85,16 @@ def _compute_timeseries(x, h, eta, r_depth=None):
         npe, nt = shpe
     
         if npe != nph:
-            brief = "Invalid Array Sizes"
-            desc = "The number of points in 'h' and 'eta' do not match, got %d and %d, respectively." % (nph, npe)
-            raise FunException(brief, desc)
+            msg = "The number of points in 'h' and 'eta' do not match, got %d and %d, respectively." % (nph, npe)
+            raise FunException(msg, TypeError)
 
         npts = nph
 
 
     if nx != npts:
-        brief = "Invalid Array Sizes"
-        desc = "The number of 'x' points do not match the number of points in 'h' and 'eta'. Number " \
+        msg = "The number of 'x' points do not match the number of points in 'h' and 'eta'. Number " \
                 "of points in 'x' is %d and the number of points in 'h' and 'eta' are %d." % (nx, np)
-        raise FunException(brief, desc)
+        raise FunException(msg, TypeError)
  
 
     # NOTE: Fix r_depth name collision 
@@ -116,16 +112,6 @@ def _compute_timeseries(x, h, eta, r_depth=None):
     return runup, runup_x, r_depth2
 
 
-def _ndarray_type_test(obj, name):
-
-    obj_type = type(obs)
-
-    if obj_type is not np.ndarry:
-        brief = "Invalid Argument Type"
-        desc = "Input argument '%s' is of type '%s' and not a numpy array." % (name, obj_type) 
-        raise FunException(brief, desc)
-
-
 def _check_args(x, h, eta, r_depth=None):
 
 
@@ -138,19 +124,16 @@ def _check_args(x, h, eta, r_depth=None):
     nde = eta.ndim
     
     if ndx != 1:
-        brief = "Invalid Dimensions of Array"
-        desc = "The dimensions of array 'x' must be 1, got %d." % ndx[0]
-        raise FunException(brief, desc)
+        msg = "The dimensions of array 'x' must be 1, got %d." % ndx[0]
+        raise FunException(msg, TypeError)
         
     if ndh != 1 and ndh != 2:
-        brief = "Invalid Dimensions of Array"
-        desc = "The dimensions of array 'h' must be either 1 or 2, got %d." % ndh
-        raise FunException(brief, desc)
+        msg = "The dimensions of array 'h' must be either 1 or 2, got %d." % ndh
+        raise FunException(msg, TypeError)
             
     if nde != 1 and nde != 2:
-        brief = "Invalid Dimensions of Array"
-        desc = "The dimensions of array 'eta' must be either 1 or 2, got %d." % nde
-        raise FunException(brief, desc)
+        msg = "The dimensions of array 'eta' must be either 1 or 2, got %d." % nde
+        raise FunException(msg, TypeError)
     
     return x, h, eta, r_depth, nde
 
@@ -164,9 +147,8 @@ def compute(x, h, eta, r_depth=None):
     elif nde == 2:
         return _compute_timeseries(x, h, eta, r_depth)
     else:
-        brief = "Unexpected Error"
-        desc = "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
-        raise FunException(brief, desc)
+        msg = "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
+        raise FunException(brief, TypeError)
 
 
 
@@ -198,9 +180,8 @@ def compute_with_stats(x, h, eta, r_depth=None, \
         return runup, runup_x, r_depth, r_percent, setup
 
     else:
-        brief = "Unexpected Error"
-        desc = "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
-        raise FunException(brief, desc)
+        msg = "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
+        raise FunException(msg, TypeError)
 
 
 
@@ -208,9 +189,7 @@ def compute_with_stats(x, h, eta, r_depth=None, \
 if __name__ == "__main__":
 
     from funwavetvdtools.stations import Profile, Stations
-
-
-    print('hello')
+    
 
 
 

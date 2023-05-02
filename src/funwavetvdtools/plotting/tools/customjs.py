@@ -2,19 +2,15 @@
 import os
 from funwavetvdtools.error import FunException
 from bokeh.models import CustomJS
-
+import funwavetvdtools.validation as fv
 
 def load(fpath, args_dict):
     
     # Figure out better method
     dir_path = os.path.realpath(os.path.dirname(__file__))
     fpath = os.path.join(dir_path, fpath)
-    
-    if not os.path.exists(fpath):
-        brief = "Error loading CustomJS file."
-        desc = "File '%s' does not exists." % fpath
-        raise FunException(brief, desc)
-        
+
+    fv.check_fpath(fpath, 'fpath')   
         
     with open(fpath) as fh: code = '\n'.join(fh.readlines())
     

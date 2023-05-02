@@ -53,9 +53,8 @@ def compute(eta1, eta2, dl, dt, h, f_min=0.05, f_max=0.45):
     n2 = len(eta2)
 
     if not n1 == n2:
-        brief = "Invalid Input Arguments"
-        desc = "The lengths of arrays eta1 and eta2 must be the same."
-        raise FunException(brief, desc)
+        msg = "The lengths of arrays eta1 and eta2 must be the same."
+        raise FunException(msg, ValueError)
 
     n = n1
     if not n % 2 == 0:

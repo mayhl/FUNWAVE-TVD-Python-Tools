@@ -9,10 +9,7 @@ import numpy as np
 
 def read(fpath, mglob=None, nglob=None, stride=1):
 
-    if not os.path.exists(fpath):
-        brief = "File Not Found"
-        desc = "Can not read field data as file '%s' does not exists." % fpath
-        raise FunException(brief, desc)
+    fv.check_fpath(fpath, 'fpath')
 
     mtype, _ = mimetypes.guess_type(fpath, strict=True)
 
@@ -25,9 +22,8 @@ def read(fpath, mglob=None, nglob=None, stride=1):
         # Assuming binary file if None is returned
         return _read_binary(fpath, mglob, nglob, stride)
     else:
-        brief = "Unexpected Error"
-        desc = "Can not read field data, detect mime type '%s' for file '%s'." % ( mtype, fpath)  
-        raise FunException(brief, desc)
+        msg = "Can not read field data, detect mime type '%s' for file '%s'." % (mtype, fpath)  
+        raise FunException(msg, TypeError)
 
 
 def _check_size(val_arg, val_read, val_str, fpath):
@@ -35,10 +31,9 @@ def _check_size(val_arg, val_read, val_str, fpath):
     val_arg = fv.convert_pos_def_int(val_arg, val_str)
     
     if val_arg > val_read:
-        brief = "Invalid Argument"
-        desc = "Input argument %s=%d is larger than dimension read, %s=%d, in " \
+        msg = "Input argument %s=%d is larger than dimension read, %s=%d, in " \
                 "text file '%s'." % (val_str, val_arg, val_str, val_read, fpath)
-        raise FunException(brief, desc)
+        raise FunException(msg, ValueError)
 
     return val_arg
 
@@ -62,14 +57,12 @@ def _read_text(fpath, mglob, nglob, stride):
 def _read_binary(fpath, mglob, nglob, stride):
 
     if mglob is None:
-        brief = "Invalid Argument"
-        desc = "Input argument mglob needs to be specifed for binary data file '%s'." % fpath
-        raise FunException(brief, desc)
+        msg = "Input argument mglob needs to be specifed for binary data file '%s'." % fpath
+        raise FunException(msg, NameError)
 
     if nglob is None:
-        brief = "Invalid Argument"
-        desc = "Input argument nglob needs to be specifed for binary data file '%s'." % fpath
-        raise FunException(brief, desc)
+        msg = "Input argument nglob needs to be specifed for binary data file '%s'." % fpath
+        raise FunException(msg, NameError)
 
 
     mglob = fv.convert_pos_def_int(mglob, 'mglob')
@@ -90,10 +83,9 @@ def _read_binary(fpath, mglob, nglob, stride):
     elif fsize_per_item == 4:
         dtype = '<f4'
     else:
-        brief = "File Read Error"
-        desc = "Failed to read binary field data, detected %.2f bytes per point, " \
+        msg = "Failed to read binary field data, detected %.2f bytes per point, " \
                 "expected 4 (single-precision) or 8 (double-precision)." % fsize_per_item
-        raise FunException(brief, desc)
+        raise FunException(msg, ValueError)
  
     data = np.fromfile(fpath, dtype)
     data = data.reshape([nglob, mglob])
