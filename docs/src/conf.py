@@ -12,7 +12,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../'))
+
+sys.path.insert(0, os.path.abspath('../../src'))
 
 
 # -- Project information -----------------------------------------------------
@@ -36,6 +37,9 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
+    'logilab_sphinx_themes',
+    'enum_tools.autoenum',
+    'autodocsumm'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -46,18 +50,28 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+autodoc_default_options = {"autosummary": True}
+
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'logilab'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_show_sourcelink = False
+html_compact_lists = True
+html_title = 'FUNWAVE Python Toolbox Documentation'
+html_sidebars = { '**': ['globaltoc.html', 'searchbox.html'] }
 
 # -- Extension configuration -------------------------------------------------
+
+#Building summary tables for autodoc modules and classes
+autodoc_default_options = {"autosummary": True}
+

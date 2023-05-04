@@ -31,3 +31,8 @@ dry_publish:
 
 develop: uninstall
 	${PIP} install -e .
+
+.PHONY: docs
+docs:
+	$(MAKE) -C docs html
+	
