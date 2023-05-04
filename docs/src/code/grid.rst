@@ -3,18 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to FUNWAVE-TVD Python Tools's documentation!
-====================================================
+====
+Grid
+====
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   class
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. automodule:: funwavetvdtools.grid
+.. autoenum:: funwavetvdtools.grid.Type
+.. autoclass:: funwavetvdtools.grid.Grid
+   :members: interpolate
+.. autoclass:: funwavetvdtools.grid.common.Type

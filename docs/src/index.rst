@@ -3,14 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to FUNWAVE-TVD Python Tools's documentation!
-====================================================
+.. role:: raw-html(raw)
+   :format: html
+
+==========================
+FUNWAVE-TVD Python Toolbox
+==========================
+
+- UNDER CONSTRUCTION -
+
+=======
+Content
+=======
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   class
+   documentation
 
 Indices and tables
 ==================
