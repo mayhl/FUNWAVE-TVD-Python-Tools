@@ -1,7 +1,9 @@
+import os
+
+import numpy as np
 
 from funwavetvdtools.error import FunException
-import os
-import numpy as np
+
 
 def check_fpath(fpath, name):
 
@@ -66,7 +68,7 @@ def _parse_str(val):
     def cast_type(val, cast):
         try:
             return cast(val)
-        except ValueError as e:
+        except ValueError:
             return None
     
     ival = cast_type(val, int)
@@ -162,5 +164,3 @@ def convert_max_val_int(val, max_val, name):
         raise FunException(msg, ValueError)
 
     return val
-
-
