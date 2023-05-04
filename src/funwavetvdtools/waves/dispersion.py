@@ -31,12 +31,12 @@ class Wave:
         # Getting number of not None arguments
         args_set = np.array(args) != None
         n_args = np.sum(args_set)
-        # Return True if one group of arugments is set correctly 
+        # Return True if one group of arguments is set correctly 
         if n_args == 0: return False
         if n_args == 1: return True
 
 
-        # Error state if more than one arugment is set
+        # Error state if more than one argument is set
         names = np.array(names)
         names = names[args_set]
 
@@ -49,9 +49,8 @@ class Wave:
             string += "and %s" % names[-1]
 
         # Raising exception 
-        brief = "Invalid Input"
-        desc = "Can not specify %s." % string
-        raise FunException(brief, desc)    
+        msg = "Can not specify %s." % string
+        raise FunException(msg, NameError)    
 
     def __init__(self, k=None, w=None, h=None, L=None, T=None, f=None):
 
@@ -94,23 +93,20 @@ class Wave:
         self._h = h
 
         if num_args > 2:
-            brief = "Invalid Input"
-            desc = "Too many wave parameters specified, only 2 required."
-            raise FunException(brief, desc)
+            msg = "Too many wave parameters specified, only 2 required."
+            raise FunException(msg, NameError)
 
         if num_args < 2:
-            brief = "Invalid Input"
-            desc = "Not enough wave parameters specified, only 2 required."
-            raise FunException(brief, desc)
+            msg = "Not enough wave parameters specified, only 2 required."
+            raise FunException(msg, NameError)
 
 
     # Wrapper function for raise exception if related variable is set
     @classmethod
     def _set_check(cls, val, val_name, set_name):
         if val is not None:
-            brief = "Invalid Assignment"
-            desc = "Can not set %s since %s has already been set." % (set_name, val_name)
-            raise FunException(brief, desc)
+            msg = "Can not set %s since %s has already been set." % (set_name, val_name)
+            raise FunException(msg, NameError)
 
 
     @property
@@ -174,9 +170,8 @@ class Wave:
     @h.setter
     def h(self, h):
         if self._h is not None:
-            brief = "Invalid Assignment"
-            desc = "Can not set h since is already been set."
-            raise FunException(brief, desc)
+            msg = "Can not set h since is already been set."
+            raise FunException(msg, NameError)
             
         self._h = h
 
@@ -196,9 +191,8 @@ def _check_args(k, L, w, T, h):
     num_args = 0
     
     if k is not None and L is not None:
-        brief = "Invalid Input"
-        desc = "Can not specify both the wavelength and wavenumber."
-        raise FunException(brief, desc)
+        msg = "Can not specify both the wavelength and wavenumber."
+        raise FunException(msg, NameError)
     elif k is None and L is None: 
         is_wave = False
     else:
@@ -207,9 +201,8 @@ def _check_args(k, L, w, T, h):
         if k is None: k = 2*np.pi/L
         
     if w is not None and T is not None:
-        brief = "Invalid Input"
-        desc = "Can not specify both the frequency and period."
-        raise FunException(brief, desc)
+        msg = "Can not specify both the frequency and period."
+        raise FunException(msg, NameError)
     elif w is None and T is None:
         is_freq = False
     else:
@@ -221,14 +214,12 @@ def _check_args(k, L, w, T, h):
     if is_h: num_args += 1
 
     if num_args > 2:
-        brief = "Invalid Input"
-        desc = "Too many wave parameters specified, only 2 required."
-        raise FunException(brief, desc)
+        msg = "Too many wave parameters specified, only 2 required."
+        raise FunException(msg, NameError)
 
     if num_args < 2:
-        brief = "Invalid Input"
-        desc = "Not enough wave parameters specified, only 2 required."
-        raise FunException(brief, desc)
+        msg = "Not enough wave parameters specified, only 2 required."
+        raise FunException(msg, NameError)
 
     return k, w, h, is_wave, is_freq, is_h
 
@@ -249,9 +240,8 @@ def shallow(k=None, w=None, h=None, L=None, T=None, f=None):
         wave.h = (wave.w/wave.k)**2/g
     else:
         # Safety check
-        brief = "Unexpected State"
-        desc = "Unexpected logic state reached."
-        raise FunException(brief, desc)
+        msg = "Unexpected logic state reached."
+        raise FunException(msg, RuntimeError)
 
     return wave
 
@@ -278,9 +268,8 @@ def full(k=None, w=None, h=None, L=None, T=None, f=None, tolerence=10**-8, max_i
         wave.h = np.tanh(c)/wave.k
     else:
         # Safety check
-        brief = "Unexpected State"
-        desc = "Unexpected logic state reached."
-        raise FunException(brief, desc)
+        msg = "Unexpected logic state reached."
+        raise FunException(msg, RuntimeError)
 
     return wave
 

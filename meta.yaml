@@ -1,0 +1,49 @@
+{% set pyproject = load_file_data('pyproject.toml', from_recipe_dir=True) %}
+{% set poetry = pyproject.get('tool').get('poetry') %}
+{% set url = pyproject.get('project').get('urls') %}
+
+{% set pkgs_dev = poetry.get('group').get('dev').get('dependencies') %}
+{% set deps = poetry.get('dependencies') %}
+
+{% set pkg_poetry = 'poetry>=1.2' %}
+{% set pkg_pip    = 'pip'    %}
+{% set pkg_python = 'python>= 3.8, < 4.0' %}
+
+{% set name = poetry.get('name') %}
+{% set version = poetry.get('version') %} 
+
+package:
+  name: {{ name }}
+  version: {{ version }} 
+
+
+build:
+  noarch: python
+  script: {{PYTHON}} -m pip install .
+
+
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+
+requirements:
+  build:
+    - {{ pkg_python }}
+    - {{ pkg_pip }}
+    - {{ pkg_poetry }}
+  host:
+    - {{ pkg_python }}
+    - {{ pkg_poetry }}
+
+  run:
+    - {{ pkg_poetry }}
+    {% for req in deps %}
+    - {{ req }}
+    {% endfor %}
+
+about:
+  license: {{ poetry.get('license') }}
+  summary: {{ poetry.get('documentation') }}
+  dev_url: {{ url.get('repository') }}
+  doc_url: {{ url.get('documentation') }}
+

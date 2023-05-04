@@ -13,9 +13,8 @@ def iterator(x0, f, df, tolerence=10**-5, max_iterations=10):
 
     # Raises exception if iterative scheme does not reach 
     # error tolerence within max iteration count
-    brief = "Iterative scheme did not convergece"
-    desc = "Newton-Raphson iterative scheme did not converenge."
-    raise FunException(brief, desc)
+    msg = "Newton-Raphson iterative scheme did not converenge."
+    raise FunException(msg, ArithmeticError)
 
 
   
