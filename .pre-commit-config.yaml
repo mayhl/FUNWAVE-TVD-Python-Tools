@@ -40,6 +40,6 @@ repos:
     hooks:
       - id: yamllint
         name: YAML Validator
-        files: .*\.(yaml|yml)
+#        files: .*\.(yaml|yml)
 #        args: [--format]
 #    args: [--format, parsable]

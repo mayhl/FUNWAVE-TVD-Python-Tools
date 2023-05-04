@@ -10,7 +10,7 @@
 FUNWAVE-TVD Python Toolbox
 ==========================
 
-UNDER CONSTRUCTION 
+- UNDER CONSTRUCTION -
 
 =======
 Content
