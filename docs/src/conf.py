@@ -13,8 +13,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../src'))
-
+sys.path.insert(0, os.path.abspath('../../src/funwavetvdtools'))
 
 # -- Project information -----------------------------------------------------
 
@@ -39,7 +38,8 @@ extensions = [
     'sphinx.ext.intersphinx',
     'logilab_sphinx_themes',
     'enum_tools.autoenum',
-    'autodocsumm'
+    'autodocsumm',
+    'nbsphinx',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -48,7 +48,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
 autodoc_default_options = {"autosummary": True}
 
@@ -75,3 +75,4 @@ html_sidebars = { '**': ['globaltoc.html', 'searchbox.html'] }
 #Building summary tables for autodoc modules and classes
 autodoc_default_options = {"autosummary": True}
 
+nbsphinx_execute = 'never'
