@@ -14,4 +14,3 @@ Grid
 .. autoenum:: funwavetvdtools.grid.Type
 .. autoclass:: funwavetvdtools.grid.Grid
    :members: interpolate
-.. autoclass:: funwavetvdtools.grid.common.Type

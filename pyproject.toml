@@ -23,12 +23,13 @@ python = ">=3.8,<3.12"
 numpy = "^1.24.3"
 scipy = "^1.10.1"
 tqdm = "^4.65.0"
-bokeh = "^3.1.0"
+bokeh = "3.0.3"
 cmocean = "^3.0.3"
 argparse = "^1.4.0"
 pandas = "^2.0.1"
 shapely = "<2.0"
 pyproj = "^3.5.0"
+jinja2 = "3.0.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^21.9b0"
@@ -45,6 +46,11 @@ autodocsumm = "^0.2.11"
 enum-tools = {extras = ["sphinx"], version = "^0.9.0.post1"}
 nbsphinx = "^0.9.1"
 ipython = "<8.13.0,>8.8.0"
+
+
+[tool.poetry.group.nb.dependencies]
+jupyterlab = "^3.6.3"
+jupyter-bokeh = "^3.0.7"
 
 [tool.poetry2conda]
 name = "funwavetvdtools"

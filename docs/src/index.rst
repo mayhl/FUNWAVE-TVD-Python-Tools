@@ -19,6 +19,7 @@ Content
 .. toctree::
    :maxdepth: 2
 
+   examples
    documentation
 
 Indices and tables

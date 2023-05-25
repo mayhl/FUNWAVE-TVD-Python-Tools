@@ -38,10 +38,18 @@ def check_subclass(obj, cls, name):
     t_obj = type(obj)    
 
     if not issubclass(t_obj, cls):
-        msg = "Input argument '%s' must be a subclass of %s, got %s." % (name, cls, t_obj) 
+        msg = "Variable '%s' must be a subclass of %s, got %s." % (name, cls, t_obj) 
         raise FunException(msg, TypeError)
 
+def check_subclasses(objs, cls, name):
 
+    for i, obj in enumerate(objs):
+
+        t_obj = type(obj)
+        if issubclass(t_obj, cls): continue 
+
+        msg = "Object type at index %d in arry %s in not a subclass of %s, got %s."
+        raise FunException(msg % (i, name, cls, t_obj), TypeError)  
 
 def check_ndarray(obj, ndim, name):
 
@@ -86,7 +94,7 @@ def _parse_str(val):
 
 def _is_int(val):
 
-    if np.issubdtype(type(val), np.str):
+    if np.issubdtype(type(val), 'str'):
         val = _parse_str(val)
         if val is None: return False
         
@@ -164,3 +172,18 @@ def convert_max_val_int(val, max_val, name):
         raise FunException(msg, ValueError)
 
     return val
+
+def check_max_val_int(val, max_val, name):
+
+    if val > max_val:
+        msg = 'Integer %s must be less than or equal to %d, got %d.' % (name, max_val, name)
+        raise FunException(msg, ValueError)
+
+    return val
+
+
+
+
+
+
+

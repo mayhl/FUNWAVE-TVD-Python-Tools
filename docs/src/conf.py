@@ -75,4 +75,4 @@ html_sidebars = { '**': ['globaltoc.html', 'searchbox.html'] }
 #Building summary tables for autodoc modules and classes
 autodoc_default_options = {"autosummary": True}
 
-nbsphinx_execute = 'never'
+#nbsphinx_execute = 'never'

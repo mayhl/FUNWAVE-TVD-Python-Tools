@@ -1,12 +1,13 @@
-import os
 import json
+import os
 import traceback
+
 
 class FunException(Exception):
 
     def __init__(self, msg, base=None): 
-        self._msg 
 
+        self._msg = msg
         self._is_base = base is not None
 
         if self._is_base:
