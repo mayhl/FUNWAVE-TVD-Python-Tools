@@ -1,40 +1,41 @@
 ﻿Name,Full Name,Datatype,Category,Units,Is Required,Default Value,Values,Requires,Required Value,Description
-PARALLEL,Parallel,Flag,Parallel,None,No,FALSE,None,None,None,
-PX,Parallel,Integer,Parallel,None,No,1,Positive Definite,PARALLEL,TRUE,
-PY,Parallel,Integer,Parallel,None,No,1,Positive Definite,PARALLEL,TRUE,
-nGlob,nGlob,Integer,Grid,None,Yes,None,Positive Definite,None,None,
-mGlob,mGlob,Integer,Grid,None,Yes,None,Positive Definite,None,None,
-CARTESIAN,Cartesian,Flag,Grid,None,Yes,TRUE,None,None,None,
+ZALPHA,ZALPHA,Flag,Grid,None,No,FALSE,None,None,None,
+PARALLEL,Parallel,Flag,Parallel,None,No,FALSE,None,None,None,FORTRAN compile flag for turning on parallel computations.
+PX,Parallel,Integer,Parallel,None,No,1,Positive Definite,PARALLEL,TRUE,Number for parallel cores/threads to use in x direction
+PY,Parallel,Integer,Parallel,None,No,1,Positive Definite,PARALLEL,TRUE,Number for parallel cores/threads to use in y direction
+nGlob,nGlob,Integer,Grid,None,Yes,None,Positive Definite,None,None,Number of points in x direction
+mGlob,mGlob,Integer,Grid,None,Yes,None,Positive Definite,None,None,Number of points in y direction
+CARTESIAN,Cartesian,Flag,Grid,None,Yes,TRUE,None,None,None,FORTRAN compile flag for switch between cartesian coordinates and spherical coordinates
 DX,DX,Float,Grid,Meters,Yes,None,Positive Definite,CARTESIAN,TRUE,Spatial resolution in the x direction
 DY,DY,Float,Grid,Meters,Yes,None,Positive Definite,CARTESIAN,TRUE,Spatial resolution in the y direction
-StretchGrid,StretchGrid,Boolean,Grid,None,No,FALSE,None,CARTESIAN,FALSE,
-DX_FILE,DX FILE,Path,Grid,None,Yes,None,None,StretchGrid,FALSE,
-DY_FILE,DY_FILE,Path,Grid,None,Yes,None,None,StretchGrid,FALSE,
-CORIOLIS_FILE,CORIOLIS_FILE,Path,Grid,None,Yes,None,None,StretchGrid,FALSE,
-Lon_West,Lon_West,Float,Grid,degrees,Yes,None,"[-180,180]",StretchGrid,TRUE,
-Lat_South,Lat_South,Float,Grid,degrees,Yes,None,"[-180,180]",StretchGrid,TRUE,
-Dphi,Dphi,Float,Grid,degrees,Yes,None,Positive Definite,StretchGrid,TRUE,
-Dtheta,Dtheta,Float,Grid,degrees,Yes,None,Positive Definite,StretchGrid,TRUE,
-DEPTH_TYPE,DEPTH_TYPE,List,Bathymetry,None,No,FLAT,"[FLAT,DATA,SLOPE]",None,None,
-DEPTH_FILE,DEPTH_FILE,Path,Bathymetry,None,Yes,None,None,DEPTH_TYPE,DATA,
-DEPTH_FLAT,DEPTH_FLAT,Float,Bathymetry,Meters,No,10,Positive Definite,DEPTH_TYPE,"[FLAT,SLOPE]",
-SLP,SLP,Float,Bathymetry,None,No,0.1,None,DEPTH_TYPE,SLOPE,
-Xslp,Xlsp,Float,Bathymetry,Meters,No,0,Positive,DEPTH_TYPE,SLOPE,
-BATHY_CORRECTION,BATHY_CORRECTION,Boolean,Bathymetry,None,No,FALSE,None,None,None,
-WaterLevel,WaterLevel,Float,Bathymetry,Meters,No,0,None,None,None,
-TOTAL_TIME,TOTAL_TIME,Float,Time,seconds,Yes,None,Positive Definite,None,None,
-PLOT_START_TIME,PLOT_START_TIME,Float,Time,seconds,No,0,Positive Definite,None,None,
-PLOT_INTV,PLOT_INTV,Float,Time,seconds,No,1,Positive Definite,None,None,
-SCREEN_INTV,SCREEN_INTV,Float,TIme,seconds,No,1,Positive Definite,None,None,
-INI_UVZ,INI_UVZ,Boolean,Hot Start,None,No,FALSE,None,None,None,
-BED_DEFORMATION,BED_DEFORMATION,Boolean,Hot Start,None,No,FALSE,None,INI_UVZ,TRUE,
-ETA_FILE,ETA_FILE,Path,Hot Start,None,Yes,None,None,INI_UVZ,TRUE,
-U_FILE,U_FILE,Path,Hot Start,None,No,None,None,INI_UVZ,TRUE,
-V_FILE,V_FILE,Path,Hot Start,None,No,None,None,INI_UVZ,TRUE,
-MASK_FILE,MASK_FILE,Path,Hot Start,None,No,None,None,INI_UVZ,TRUE,
-HotStartTime,HotStartTime,Float,Hot Start,seconds,No,0,Positive,INI_UVZ,TRUE,
-OutputStartNumber,OutputStartNumber,Integer,Hot Start,None,No,1,Positive,INI_UVZ,TRUE,
-WAVEMAKER,WAVEMAKER,List,Wave Maker,None,No,None,"['LEF_SOL', 'WK_TIME', 'INI_SOL', 'N_WAVE', 'INI_REC', 'INI_GAU', 'INI_DIP', 'WK_REG', 'WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_DATA2D', 'WK_DATA2D', 'ABS', 'LEFT_BC_IRR']",None,None,
+StretchGrid,StretchGrid,Boolean,Grid,None,No,FALSE,None,CARTESIAN,FALSE,Flag for using a grid varying grid point spacing. 
+DX_FILE,DX FILE,Path,Grid,None,Yes,None,None,StretchGrid,TRUE,Path to text file of spacing between x grid points
+DY_FILE,DY_FILE,Path,Grid,None,Yes,None,None,StretchGrid,TRUE,Path to text file of spacing between y grid points
+CORIOLIS_FILE,CORIOLIS_FILE,Path,Grid,None,Yes,None,None,StretchGrid,FALSE,Path to text file of Coriolis parameters at each grid point.
+Lon_West,Lon_West,Float,Grid,degrees,Yes,None,"[-180,180]",StretchGrid,TRUE,Longitude of west boundary in degrees 
+Lat_South,Lat_South,Float,Grid,degrees,Yes,None,"[-180,180]",StretchGrid,TRUE,Latitude of south boundary in degrees.
+Dphi,Dphi,Float,Grid,degrees,Yes,None,Positive Definite,StretchGrid,TRUE,Spatial resolution in degree in the logitude direction
+Dtheta,Dtheta,Float,Grid,degrees,Yes,None,Positive Definite,StretchGrid,TRUE,Spatial resolution in degree in the latitude direction
+DEPTH_TYPE,DEPTH_TYPE,List,Bathymetry,None,No,FLAT,"['FLAT', 'DATA', 'SLOPE']",None,None,Bathymetry/Depth type to use.
+DEPTH_FILE,DEPTH_FILE,Path,Bathymetry,None,Yes,None,None,DEPTH_TYPE,DATA,"Path to text file of still water level depth at each grid point. Note, positive values denote below water level."
+DEPTH_FLAT,DEPTH_FLAT,Float,Bathymetry,Meters,No,10,Positive Definite,DEPTH_TYPE,"['FLAT', 'SLOPE']","Depth of flat region in bathymetry. Note, positive values denote below water level. "
+SLP,SLP,Float,Bathymetry,None,No,0.1,None,DEPTH_TYPE,SLOPE,Slope of beach
+Xslp,Xlsp,Float,Bathymetry,Meters,No,0,Positive,DEPTH_TYPE,SLOPE,x location to transition between flat depth and slope region.
+BATHY_CORRECTION,BATHY_CORRECTION,Boolean,Bathymetry,None,No,FALSE,None,None,None,Flag to using built in interative local smoothing scheme to bathymetry data
+WaterLevel,WaterLevel,Float,Bathymetry,Meters,No,0,None,None,None,Additional water level to add/substract from still water level in bathymetry data
+TOTAL_TIME,TOTAL_TIME,Float,Time,seconds,Yes,None,Positive Definite,None,None,Total simulation time for run
+PLOT_START_TIME,PLOT_START_TIME,Float,Time,seconds,No,0,Positive,None,None,Optional offset for initial start time of run
+PLOT_INTV,PLOT_INTV,Float,Time,seconds,No,1,Positive Definite,None,None,Time interval between wrtiting 2D field data to file
+SCREEN_INTV,SCREEN_INTV,Float,Time,seconds,No,1,Positive Definite,None,None,Time interval between summary updates in log file output
+INI_UVZ,INI_UVZ,Boolean,Hot Start,None,No,FALSE,None,None,None,"Flag for using hot start mode. Allows specifiying initial free surface height (eta) and velocities (u, v) for run"
+BED_DEFORMATION,BED_DEFORMATION,Boolean,Hot Start,None,No,FALSE,None,INI_UVZ,TRUE,DEPRECATED?
+ETA_FILE,ETA_FILE,Path,Hot Start,None,Yes,None,None,INI_UVZ,TRUE,Path to initial free surface height at grid points  to initialize run with
+U_FILE,U_FILE,Path,Hot Start,None,No,None,None,INI_UVZ,TRUE,"Optional path to initial x-direction velocities, u, at grid points  for hot start mode."
+V_FILE,V_FILE,Path,Hot Start,None,No,None,None,INI_UVZ,TRUE,"Optional path to initial y-direction velocities, v, at grid points  for hot start mode."
+MASK_FILE,MASK_FILE,Path,Hot Start,None,No,None,None,INI_UVZ,TRUE,DEPRECATED?
+HotStartTime,HotStartTime,Float,Hot Start,seconds,No,0,Positive,INI_UVZ,TRUE,Optional offset for initial start time of hot start run
+OutputStartNumber,OutputStartNumber,Integer,Hot Start,None,No,1,Positive,INI_UVZ,TRUE,Optional offset number for field data file output numbers in hot start run
+WAVEMAKER,WAVEMAKER,List,Wave Maker,None,No,None,"['LEF_SOL', 'WK_TIME', 'INI_SOL', 'N_WAVE', 'INI_REC', 'INI_GAU', 'INI_DIP', 'WK_REG', 'WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_DATA2D', 'WK_DATA2D', 'ABS', 'LEFT_BC_IRR']",None,None,Wave maker type to use in simulation
 AMP,AMP,Float,Wave Maker,Meters,Yes,None,Positive Definite,WAVEMAKER,"['LEFT_SOL', 'INI_SOL', 'INI_REC', 'INI_GAU', 'INI_DIP']",
 DEP,DEP,Float,Wave Maker,Meters,Yes,None,Positive Definite,WAVEMAKER,"['LEFT_SOL', 'INI_SOL']",
 LAGTIME,LAGTIME,Float,Wave Maker,seconds,No,0,Positive,WAVEMAKER,['LEFT_SOL'],
@@ -54,7 +55,7 @@ x2_Nwave,x2_Nwave,Float,Wave Maker,Meters,Yes,None,Positive,WAVEMAKER,['N_WAVE']
 a0_Nwave,a0_Nwave,Float,Wave Maker,None,Yes,None,Positive,WAVEMAKER,['N_WAVE'],
 gamma_Nwave,gamma_Nwave,Float,Wave Maker,None,Yes,None,Positive,WAVEMAKER,['N_WAVE'],
 dep_Nwave,dep_Nwave,Float,Wave Maker,None,Yes,None,Positive Definite,WAVEMAKER,['N_WAVE'],
-Xc,Xc,Float,Wave Maker,Meters,Yes,None,Positive,WAVEMAKER,"['INI_REC', , 'INI_GAU', 'INI_DIP']",
+Xc,Xc,Float,Wave Maker,Meters,Yes,None,Positive,WAVEMAKER,"['INI_REC', 'INI_GAU', 'INI_DIP']",
 Yc,Yc,Float,Wave Maker,Meters,No,0,Positive,WAVEMAKER,"['INI_REC', 'INI_GAU', 'INI_DIP']",
 WID,WID,Float,Wave Maker,None,Yes,None,None,WAVEMAKER,"['INI_REC', 'INI_GAU', 'INI_DIP']",
 Tperiod,Tperiod,Float,Wave Maker,seconds,Yes,None,Positive Definite,WAVEMAKER,"['WK_REG', 'WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D']",
@@ -85,25 +86,25 @@ DIFFUSION_SPONGE,DIFFUSION_SPONGE,Boolean,Sponge Boundary Layer,None,No,FALSE,No
 Csp,Csp,Float,Sponge Boundary Layer,None,No,0.1,Positive Definite,DIFFUSION_SPONGE,TRUE,
 FRICTION_SPONGE,FRICTION_SPONGE,Boolean,Sponge Boundary Layer,None,No,FALSE,None,None,None,
 CDsponge,CDsponge,Float,Sponge Boundary Layer,None,No,5,Positive Definite,FRICTION_SPONGE,TRUE,
-Sponge_west_width,Sponge_west_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[TRUE, TRUE, TRUE]",
-Sponge_east_width,Sponge_east_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[TRUE, TRUE, TRUE]",
-Sponge_south_width,Sponge_south_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[TRUE, TRUE, TRUE]",
-Sponge_north_width,Sponge_north_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[TRUE, TRUE, TRUE]",
-R_sponge,R_sponge,Float,Sponge Boundary Layer,None,No,0.85,Positive Definite,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[TRUE, TRUE, TRUE]",
-A_sponge,A_sponge,Float,Sponge Boundary Layer,None,No,5,Positive Definite,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[TRUE, TRUE, TRUE]",
+Sponge_west_width,Sponge_west_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[True, True, True]",
+Sponge_east_width,Sponge_east_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[True, True, True]",
+Sponge_south_width,Sponge_south_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[True, True, True]",
+Sponge_north_width,Sponge_north_width,Float,Sponge Boundary Layer,Meters,No,0,Positive,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[True, True, True]",
+R_sponge,R_sponge,Float,Sponge Boundary Layer,None,No,0.85,Positive Definite,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[True, True, True]",
+A_sponge,A_sponge,Float,Sponge Boundary Layer,None,No,5,Positive Definite,"['DIRECT_SPONGE', 'DIFFUSION_SPONGE', 'FRICTION_SPONGE']","[True, True, True]",
 OBSTACLE_FILE,OBSTACLE_FILE,Path,Obstacle and Breakwater,None,No,None,None,None,None,
 BREAKWATER_FILE,BREAKWATER_FILE,Path,Obstacle and Breakwater,None,No,None,None,None,None,
 BreakWaterAbsorbCoef,BreakWaterAbsorbCoef,Float,Obstacle and Breakwater,None,No,10,None,BREAKWATER_FILE,Defined,
 DISPERSION,DISPERSION,Boolean,Physics,None,No,TRUE,None,None,None,
 Gamma1,Gamma1,Float,Physics,None,No,1,Positive,None,None,
 Gamma2,Gamma2,Float,Physics,None,No,1,Positive,CARTESIAN,TRUE,
-Beta_ref,Beta_ref,Float,Physics,None,No,-0.531,None,"['CARTESIAN', 'ZALPHA']","[TRUE, TRUE]",
+Beta_ref,Beta_ref,Float,Physics,None,No,-0.531,None,"['CARTESIAN', 'ZALPHA']","[True, True]",
 Gamma3,Gamma3,Float,Physics,None,No,1,Positive,CARTESIAN,TRUE,
 FRICTION_MATRIX,FRICTION_MATRIX,Boolean,Physics,None,No,FALSE,None,None,None,
 FRICTION_FILE,FRICTION_FILE,Path,Physics,None,Yes,None,None,FRICTION_MATRIX,TRUE,
 Cd,Cd,Float,Physics,None,No,0,Positive,FRICTION_MATRIX,FALSE,
 Time_Scheme,Time_Scheme,List,Numerics,None,No,Runge_Kutta,"['Runge_Kutta', 'Predictor_Corrector']",None,None,
-CONSTRUCTION,CONSTRUCTION,List,Numerics,None,No,HLLC,None,None,None,
+CONSTRUCTION,CONSTRUCTION,List,Numerics,None,No,HLLC,['HLLC'],None,None,
 HIGH_ORDER,HIGH_ORDER,List,Numerics,None,No,FOURTH,"['FOURTH', 'THIRD']",None,None,
 CFL,CFL,Float,Numerics,None,No,0.5,Positive Definite,None,None,
 FIXED_DT,FIXED_DT,Boolean,Numerics,None,No,FALSE,None,None,None,
@@ -126,7 +127,3 @@ WAVEMAKER_Cbrk,WAVEMAKER_Cbrk,Float,Wave Breaking,None,No,1,None,None,None,
 WAVEMAKER_VIS,WAVEMAKER_VIS,Boolean,Wave Breaking,None,No,FALSE,None,None,None,
 visbrk,visbrk,Float,Wave Breaking,None,Yes,None,None,WAVEMAKER_VIS,TRUE,
 WAVEMAKER_visbrk,WAVEMAKER_visbrk,Float,Wave Breaking,None,Yes,None,None,WAVEMAKER_VIS,TRUE,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,

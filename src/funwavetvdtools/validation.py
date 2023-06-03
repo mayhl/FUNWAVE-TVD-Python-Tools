@@ -23,15 +23,16 @@ def check_type(obj, cls, name):
 
 def check_types(objs, cls, name):
 
-    objs = convert_array(objs)
+    #objs = convert_array(objs, name)
         
-    msg = "Invalid element type at index %d in array %, expected %s, got %s."
+    msg = "Invalid element type at index %d in array '%s', expected %s, got %s."
 
     for i, obj in enumerate(objs):
 
         t_obj = type(obj)
         if t_obj is not cls:
             raise FunException(msg % (i, name, cls, t_obj), TypeError)
+
 
 def check_subclass(obj, cls, name):
 
@@ -100,6 +101,14 @@ def _is_int(val):
         
     return np.issubdtype(type(val), np.integer)
 
+def _is_flt(val):
+
+    if np.issubdtype(type(val), 'str'):
+        val = _parse_str(val)
+        if val is None: return False
+
+    return True
+
 def convert_number(val, name):
 
     t_val = type(val)
@@ -111,15 +120,66 @@ def convert_number(val, name):
 
     return val
 
+
+def convert_flt(val, name):
+
+    if not _is_flt(val):
+        msg = "Input argument %s is not a float, got type %s." % (name, type(val))
+        raise FunException(msg, TypeError)
+
+    return float(val)
+
+
+def _in_range(val, rng):
+    vmin, vmax = rng[0], rng[1]
+    return (val < vmin) or (val > vmax)
+
+
+def convert_in_range_flt(val, name, rng):
+
+    val = convert_flt(val, name)    
+    if _in_range(val, rng):
+        msg = "Variable '%s' is not in the range (%f, %f), got %f." % (name, rng[0], rng[1], val)  
+        raise FunException(msg, ValueError)
+
+    return val
+
+    
+def convert_pos_flt(val, name):
+
+    val = convert_flt(val, name)
+    if val < 0:
+        msg = "Input argument %s is not a postive number, got %d." % (name, val)
+        raise FunException(msg, ValueError)
+
+
+    return val
+
+def convert_pos_def_flt(val, name):
+
+    val = convert_flt(val, name)
+    if val <= 0:
+        msg = "Input argument %s is not a positive definite number, got %d." % (name, val)
+        raise FunException(msg, ValueError)
+
+    return val
+
 def convert_int(val, name):
 
-    t_val = type(val)
-    
     if not _is_int(val):
-        msg = "Input argument %s is not an integer, got type %s." % (name, t_val)
+        msg = "Input argument %s is not an integer, got type %s." % (name, type(val))
         raise FunException(msg, TypeError)
 
     return int(val)
+
+def convert_in_range_int(val, name, rng): 
+    
+    val = convert_int(val, name)
+    if _in_range(val, rng):
+        msg = "Variable '%s' is not in the range (%f, %f), got %f." % (name, rng[0], rng[1], val) 
+        raise FunException(msg, ValueError)
+        
+    return val
 
 def convert_ints(vals, name):
 
@@ -182,8 +242,10 @@ def check_max_val_int(val, max_val, name):
     return val
 
 
+def is_in_list(val, name, values):
 
+    if not val in values:
+        msg = "Value '%s' must in the list: %s, got %s." % (name, values, val) 
+        raise FunException(msg, ValueError)
 
-
-
-
+    return val

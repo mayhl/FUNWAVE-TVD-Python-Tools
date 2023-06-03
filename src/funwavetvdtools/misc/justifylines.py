@@ -1,22 +1,38 @@
 class JustifyLines:
     
-    def __init__(self , justifyModes ):
+    def __init__(self, modes, seperators=None):
         
-        self.__justifyModes = justifyModes
-        self.__nArgs = len(justifyModes)
-        self.__lines = []  
-        self.__maxLens = [0]*self.__nArgs
+        self._modes = modes
+        self._n = len(modes)
+        self._lines = []  
+        self._max_lens = [0]*self._n
         
-        
-        for i in range (0,len(justifyModes)):
+
+        nm = self._n-1
+        seps_type = type(seperators)
+        if seperators is None:
+            seperators = [' ']*nm
+        elif seps_type is str:
+            seperators = [seperators]*nm
+        elif seps_type is list:
+            if not len(seperators) == nm:
+                raise Exception("Length of seperators must be one less than number of items")
+        else:
+            raise ValueError("Seperators must be a string or list")
+
+
+        self._seps = seperators
+
+    
+        for i in range (0,len(modes)):
             
-            justifyModes[i] = justifyModes[i].lower()
-            justifyMode = justifyModes[i]
+            modes[i] = modes[i].lower()
+            mode = modes[i]
             
-            if ( type(justifyMode) is str ):
-                if ( len(justifyMode) == 1 ):
-                    if ( not justifyMode =='c' and not justifyMode == 'l' and not justifyMode == 'r' ):
-                        raise Exception("Argument %d is '%s', must be 'l' (left), 'c' (center) or 'r' (right)." % (i+1,justifyMode) )
+            if ( type(mode) is str ):
+                if ( len(mode) == 1 ):
+                    if ( not mode =='c' and not mode == 'l' and not mode == 'r' ):
+                        raise Exception("Argument %d is '%s', must be 'l' (left), 'c' (center) or 'r' (right)." % (i+1,mode) )
                 else:
                     raise Exception("Argument %d is not a single character" % (i+1) )
                 
@@ -25,48 +41,51 @@ class JustifyLines:
         
     def append( self, vals ):
          
-        if ( len(vals) == self.__nArgs):
+        if ( len(vals) == self._n):
             
             for i in range(len(vals)):
                 val = vals[i]
                 if ( type(val) is str):           
                     lenVal = len(val)
-                    if ( lenVal > self.__maxLens[i] ):
-                        self.__maxLens[i] = lenVal
+                    if ( lenVal > self._max_lens[i] ):
+                        self._max_lens[i] = lenVal
                     
                 else:
                     raise Exception("Can not append line, argument %d is not a string." % (i+1) )
             
-            self.__lines.append(vals) 
+            self._lines.append(vals) 
         else:
-            raise Exception("Can not append line, %d values given when %d are required." % (nVals,self.__nArgs) )
+            raise Exception("Can not append line, %d values given when %d are required." % (nVals,self._n) )
        
     def clear(self):
-        self.__lines = []
-        self.__maxLens = [0]*self.__nArgs
+        self._lines = []
+        self._max_lens = [0]*self._n
         
+
+    
         
     def getFormattedLines(self):
-        
-        formatedLines = [];
-      
-        for line in self.__lines:
+        return self.to_formatted_lines()
+
+    def to_formatted_lines(self):
+
+        def get_just(arg, mode, max_len):
+
+            if   mode == 'r':
+                return arg.rjust(max_len)
+            elif mode == 'c' :
+                return arg.center(max_len)
+            else:
+                return arg.ljust(max_len)
+     
+        fmt_lines = [] 
+        for line in self._lines:
             
-            formattedLine = ""
-            
-            for arg, justifyMode, maxLen in zip(line, self.__justifyModes, self.__maxLens ):
-             
-                if  ( justifyMode == 'r'):
-                    formattedLine += arg.rjust( maxLen )
-                elif( justifyMode == 'c' ):
-                    formattedLine += arg.center( maxLen )
-                else:
-                    formattedLine += arg.ljust( maxLen )
-                    
-                formattedLine += " "
-                
-            formatedLines.append(formattedLine)
+            args = list(zip(line, self._modes, self._max_lens))
+            fmt_items = [get_just(arg, mode, max_len) + sep for (arg, mode, max_len), sep in zip(args, self._seps)]
+            fmt_items.append(get_just(*args[-1]))
+            fmt_lines.append(''.join(fmt_items))
         
-        return formatedLines
+        return fmt_lines
 
 
