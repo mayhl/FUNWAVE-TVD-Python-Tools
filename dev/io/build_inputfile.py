@@ -1,7 +1,10 @@
 import ast
+from datetime import datetime, timezone
 
+import numpy as np
 import pandas as pd
 
+from funwavetvdtools.io.parameter import Category, Datatype
 from funwavetvdtools.misc.justifylines import JustifyLines
 
 
@@ -13,27 +16,40 @@ def write(line, tabs=0):
 
 
 _d_map={
-    'Flag'   : 'FLAG'   ,    
-    'Integer': 'INTEGER',
-    'List'   : 'ENUM'   ,
-    'Boolean': 'BOOL'   ,
-    'Float'  : 'FLOAT'  ,
-    'Path'   : 'PATH'    
+    'Flag'       : 'FLAG'   ,    
+    'Integer'    : 'INTEGER',
+    'List'       : 'ENUM'   ,
+    'Boolean'    : 'BOOL'   ,
+    'Float'      : 'FLOAT'  ,
+    'Path'       : 'PATH'   ,
+    'String'     : 'STRING' ,
+    'Output Flag': 'OUT_FLAG' 
 } 
 _c_map={
-    'Grid'      : 'GRID'      ,
-    'Parallel'  : 'PARALLEL'  ,
-    'Bathymetry': 'BATHYMETRY',
-    'Time'      : 'TIME'      ,
-    'Hot Start' : 'HOT_START' ,
-    'Wave Maker': 'WAVE_MAKER',
-    'Sponge Boundary Layer': 'ERR', 
-    'Obstacle and Breakwater': 'ERR',
-    'Physics'   : 'PHYSICS',
-    'Numerics'  : 'NUMERICS',
-    'Stations'  : 'STATIONS',
-    'Wave Breaking'  : 'ERR',
-    'Boundary Conditions': 'ERR'
+    'Main'                   : 'GENERAL'   ,
+    'Output'                 : 'OUTPUT'    ,
+    'Statistics'             : 'STATISTICS',
+    'Grid'                   : 'GRID'      ,
+    'Parallel'               : 'PARALLEL'  ,
+    'Bathymetry'             : 'BATHYMETRY',
+    'Time'                   : 'TIME'      ,
+    'Hot Start'              : 'HOT_START' ,
+    'Wave Maker'             : 'WAVE_MAKER',
+    'Sponge Boundary Layer'  : 'SPONGE_BCS', 
+    'Obstacle and Breakwater': 'OBS_AND_BRKWTR',
+    'Physics'                : 'PHYSICS',
+    'Numerics'               : 'NUMERICS',
+    'Stations'               : 'STATIONS',
+    'Wave Breaking'          : 'BREAKING',
+    'Boundary Conditions'    : 'PERIODIC_BCS'
+}
+
+_c_map={
+    'Central': 'CENTRAL',
+    None     : 'NONE',
+    'Parallel': 'PARALLEL',
+    'Numerics': 'NUMERICS',
+    'Grid'    : 'GRID',
 }
 
 _v_map={
@@ -45,15 +61,54 @@ _v_map={
     }
 }
 
+def parse_enum(enum, value):
+
+    extra_maps = {
+        Datatype: {
+            'Output Flag': "OUT_FLAG",
+            'Boolean'    : "BOOL",
+        }, 
+        Category: {
+            'Obstacle and Breakwater': 'OBS_AND_BRKWTR',
+            'Wave Breaking': 'BREAKING'
+        },
+    }
+
+    def format(enum, value):
+        value = enum[value].name
+        name = enum.__name__
+        return "%s.%s" % (name, value)
+
+    if value is None or value == 'None':
+        is_none = not parse_enum(enum, 'NONE') is None
+        return format(enum, 'NONE') if is_none else None  
+
+    
+
+    keys = [e.name for e in enum]
+    if value in keys: return format(enum, value)
+
+    if enum in extra_maps:
+        if value in extra_maps[enum]:
+            return format(enum, extra_maps[enum][value])
+
+    if not type(value) is str: return None
+
+    value = value.upper()
+    if value in keys: return format(enum, value)
+    value = value.replace(' ', '_')
+    if value in keys: return format(enum, value)
+
+    return None 
+
+
 def get_validator(row, datatype):
 
-
-    vals = row['Values']
-
+    vals = row['Mask']
     if vals is None: return "Mask.NONE"
 
     if datatype == 'Datatype.ENUM':
-        if not type(vals) is list: raise Exception("Enum vals is not a list")
+        if not type(vals) is list: raise Exception("Enum vals is not a list. %s" % vals)
         return "Mask.RANGE"
 
     if datatype == 'Datatype.INTEGER':
@@ -68,12 +123,17 @@ def get_validator(row, datatype):
         if vals == 'Positive Definite': return "Mask.POSITIVE_DEFINITE"
         if vals == 'Positive': return 'Mask.POSITIVE'
 
-    raise NotImplementedError("No validator defined for %s and vals %s." % (datatype, vals))
+    if datatype == 'Datatype.STRING':
+        return 'Mask.NONE'
+
+    if datatype == 'Datatype.OUT_FLAG':
+        return 'Mask.NONE'
+    raise NotImplementedError("No validator defined for %s and vals %s. Row: %s" % (datatype, vals, row))
 
 
 def get_dependencies(row):
 
-    deps = row['Requires']
+    deps = row['Dependencies']
 
     if deps is None: return 'None'
 
@@ -81,7 +141,7 @@ def get_dependencies(row):
     nd = len(deps) if type(deps) is list else 1
     
 
-    values = row['Required Value']
+    values = row['Dependencies Values']
 
     if values == "Positive Definite": values = "Mask.POSITIVE_DEFINITE"
     if type(values) is list:
@@ -131,64 +191,58 @@ def get_default_value(row):
 
 def add_parameter(row):
 
-    c_name = 'Category'
-    d_name = 'Datatype'
-
     name="'%s'" % row['Name']
     fullname="'%s'" % row['Full Name']    
-    datatype = "%s.%s" % (d_name, _d_map[row['Datatype']])
-    category = "%s.%s" % (c_name, _c_map[row['Category']])
-    is_required = "True" if row['Is Required'] == 'Yes' else 'False'
+    datatype = parse_enum(Datatype, row['Datatype'])
+    if datatype is None: print("D: %s" % row) 
+
+    cell = row['Category']
+    if type(cell) is list: 
+        category =  [parse_enum(Category, item) for item in cell]
+        if np.any([c is None for c in category]): raise Exception()
+
+        category = "[%s]" % ', '.join(category)
+    else:
+        category = parse_enum(Category, row['Category'])
+        if category is None: raise Exception()
+    if category is None: print("C: %s" %row['Category'])
 
     description = "'%s'" % row['Description']
 
-    validator = get_validator(row, datatype) 
+    is_required = row['Is Required'] 
+    mask = get_validator(row, datatype) 
 
-    vals = row['Values']
-    values = "%s" % str(row['Values']) if type(vals) is list else 'None'
- 
-
+    values = "%s" % str(row['Mask']) if type(row['Mask']) is list else 'None'
     default_value = get_default_value(row)
-
-
     dependencies = get_dependencies(row)
 
-    
-    start = "self._%s = Parameter(...)" % row['Name']
-
-    'self._%s' % row['Name']
-    s2 = " = Parameter("
-
-
-    inputs = [name, fullname, datatype, category, is_required, description, validator, values, default_value, dependencies]
-
-    names = ['name', 'fullname', 'datatype', 'category', 'is_required', 'description', 'mask', 'values', 'default_value', 'dependencies']
-
-    tabs = 3
-
-    jlines = JustifyLines(['l']*2, seperators=' = ')
-
-    for inp, name in zip(inputs, names):
-        jlines.append([name, inp])
+    inputs = {'name'         : name,
+              'fullname'     : fullname,
+              'datatype'     : datatype,
+              'category'     : category,
+              'is_required'  : is_required,
+              'description'  : description,
+              'mask'         : mask ,
+              'values'       : values,
+              'default_value': default_value,
+              'dependencies' : dependencies}
 
     tabs = 2
     def_lines.append(('self._%s = Parameter(' % row['Name'], tabs))
     tabs = 3
 
-
+    # Getting justified parameter assignments
+    jlines = JustifyLines(['l']*2, seperators=' = ')
+    for k in inputs: jlines.append([k, inputs[k]])
     lines = jlines.to_formatted_lines()
+    # Adding , to all lines except last 
     for i in range(len(lines)-1):  lines[i] += ","
+    
+    # Writing out lines and ending brackets
+    tabs = 3
     def_lines.extend([(line, tabs) for line in lines])
- 
     tabs = 2
     def_lines.append((')', tabs))
-
-    #for inp in inputs[:-1]:
-    #    def_lines.append((inp +",", tabs))
-
-    #inp = inputs[-1]
-    #def_lines.append((inp +")", tabs))
-
 
 #    jl_params.append([
 #        s1, s2, name, fullname, datatype, category, is_required, description,
@@ -213,7 +267,7 @@ def get_formated_slots(d=6):
 
     sep = ', '
     jlines = JustifyLines(['l']*d, seperators=sep)
-    params = [name for name in parameters]
+    params = sorted([name for name in parameters])
     for s in range(0, len(params), d):
     
         e = s + d
@@ -225,11 +279,12 @@ def get_formated_slots(d=6):
         
     lines = jlines.to_formatted_lines()
 
+    lines[-1] = lines[-1].replace(", ''", "   ")
     for i in range(len(lines)-1): lines[i] += sep
    
     line = lines[-1]
     line, *_ = line.split(sep + "''")
-    lines[-1] = line.ljust(len(lines[0])) + "])"
+    #lines[-1] = line.ljust(len(lines[0])) + "])"
     return lines
 
 def write_header():
@@ -242,19 +297,19 @@ def write_header():
     write("class InputFile(InputFileInterface):")
     write("")
     tabs = 1
-    write("__slots__ = InputFileInterface.get_slots([", tabs)
- 
+
+    dt_stamp = datetime.now(timezone.utc).strftime("%Y/%m/%d %H:%M:%S %Z")
+    write("__doc__ = InputFileInterface._get_doc_string('%s')" % dt_stamp, tabs)
+    write("")
+    write("# NOTE: __slots__ appearing before doc string caused issues in Sphinx", tabs)
+    write("__slots__ = InputFileInterface._get_slots([", tabs)
     tabs = 2
 
     for line in get_formated_slots(): write(line, tabs)
-    [name for name in parameters]
+    write("])", tabs=1)
     write("")
 
     tabs = 1
-    write('"""', tabs)
-    write('Input File Class', tabs)
-    write( 'Auto generated on ', tabs) 
-    write('"""', tabs)
 
     write("def __init__(self, **values):", tabs)
     tabs = 2 
@@ -290,23 +345,23 @@ if __name__ == "__main__":
     # Light preprocessing
     df = df.where(pd.notnull(df), None)
     df = df.replace(['none', 'None'], None)
-    df = df.replace(['True', 'TRUE'], 'True')
-    df = df.replace(['False', 'FALSE'], 'False')
+    df = df.replace(['true', 'True', 'TRUE'], 'True')
+    df = df.replace(['false', 'False', 'FALSE'], 'False')
 
     # Casting entries containing [ character as literal Python lists
-    for i, row in df.iterrows():
-    
-        for key in row.keys():        
-            if row[key] is None: continue
-            if not '[' in row[key]: continue
+    def f(cell):
+        if cell is None: return None
 
-            try: 
-                row[key] = ast.literal_eval(row[key])
-            except Exception:
-                print(row)
-                print("Key: %s" % key)
-                print("Value: %s" % row[key])
-                raise Exception("FAIL CONVERT")
+        if type(cell) is bool: return cell
+
+        if not '[' in cell: return cell
+
+        try:
+            return ast.literal_eval(cell)
+        except Exception:
+            raise Exception("FAIL CONVERT")
+
+    df = df.applymap(f)
 
     # Filter parameters by none to most dependinces 
     max_steps = 10
@@ -317,12 +372,12 @@ if __name__ == "__main__":
             
             # Only adding parameters with depedencies that have already be added
             is_add = True
-            if not row['Requires'] is None:
+            if not row['Dependencies'] is None:
             
-                if not type(row['Requires']) is list:
-                    if not row['Requires'] in parameters.keys(): is_add = False
+                if not type(row['Dependencies']) is list:
+                    if not row['Dependencies'] in parameters.keys(): is_add = False
                 else:
-                    for val in row['Requires']:
+                    for val in row['Dependencies']:
                         if not val in parameters.keys():
                             is_add = False
                             break

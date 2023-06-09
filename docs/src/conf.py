@@ -51,7 +51,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
 autodoc_default_options = {"autosummary": True}
-
+autoclass_content = 'both'
 
 # -- Options for HTML output -------------------------------------------------
 

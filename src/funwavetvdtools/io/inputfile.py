@@ -4,34 +4,36 @@ from funwavetvdtools.io.parameter import Category, Datatype, Mask, Parameter
 
 class InputFile(InputFileInterface):
 
-   __slots__ = InputFileInterface.get_slots([
-      'ZALPHA'          , 'PARALLEL'      , 'nGlob'               , 'mGlob'             , 'CARTESIAN'                , 'DEPTH_TYPE'        , 
-      'BATHY_CORRECTION', 'WaterLevel'    , 'TOTAL_TIME'          , 'PLOT_START_TIME'   , 'PLOT_INTV'                , 'SCREEN_INTV'       , 
-      'INI_UVZ'         , 'WAVEMAKER'     , 'DIRECT_SPONGE'       , 'DIFFUSION_SPONGE'  , 'FRICTION_SPONGE'          , 'OBSTACLE_FILE'     , 
-      'BREAKWATER_FILE' , 'DISPERSION'    , 'Gamma1'              , 'FRICTION_MATRIX'   , 'Time_Scheme'              , 'CONSTRUCTION'      , 
-      'HIGH_ORDER'      , 'CFL'           , 'FIXED_DT'            , 'FroudeCap'         , 'MinDepth'                 , 'MinDepthFrc'       , 
-      'OUT_Time'        , 'NumberStations', 'ROLLER_EFFECT'       , 'VISCOSITY_BREAKING', 'SHOW_BREAKING'            , 'WAVEMAKER_Cbrk'    , 
-      'WAVEMAKER_VIS'   , 'PX'            , 'PY'                  , 'DX'                , 'DY'                       , 'StretchGrid'       , 
-      'DEPTH_FILE'      , 'DEPTH_FLAT'    , 'SLP'                 , 'Xslp'              , 'BED_DEFORMATION'          , 'ETA_FILE'          , 
-      'U_FILE'          , 'V_FILE'        , 'MASK_FILE'           , 'HotStartTime'      , 'OutputStartNumber'        , 'AMP'               , 
-      'DEP'             , 'LAGTIME'       , 'NumWaveComp'         , 'PeakPeriod'        , 'Xc_WK'                    , 'Yc_WK'             , 
-      'DEP_WK'          , 'Time_ramp'     , 'Delta_WK'            , 'Ywidth_WK'         , 'SolitaryPositiveDirection', 'XWAVEMARKER'       , 
-      'x1_Nwave'        , 'x2_Nwave'      , 'a0_Nwave'            , 'gamma_Nwave'       , 'dep_Nwave'                , 'Xc'                , 
-      'Yc'              , 'WID'           , 'Tperiod'             , 'AMP_WK'            , 'Theta_WK'                 , 'alpha_c'           , 
-      'EqualEnergy'     , 'WAVE_DATA_TYPE', 'DepthWaveMaker'      , 'ETA_LIMITER'       , 'WaveMakerCd'              , 'PERODIC'           , 
-      'Csp'             , 'CDsponge'      , 'Sponge_west_width'   , 'Sponge_east_width' , 'Sponge_south_width'       , 'Sponge_north_width', 
-      'R_sponge'        , 'A_sponge'      , 'BreakWaterAbsorbCoef', 'Gamma2'            , 'Beta_ref'                 , 'Gamma3'            , 
-      'FRICTION_FILE'   , 'Cd'            , 'ArrTimeMin'          , 'PLOT_INTV_STATION' , 'StationOutputBuffer'      , 'STATIONS_FILE'     , 
-      'SWE_ETA_DEP'     , 'Cbrk1'         , 'Cbrk2'               , 'visbrk'            , 'WAVEMAKER_visbrk'         , 'DX_FILE'           , 
-      'DY_FILE'         , 'CORIOLIS_FILE' , 'Lon_West'            , 'Lat_South'         , 'Dphi'                     , 'Dtheta'            , 
-      'WaveCompFile'    , 'FreqPeak'      , 'FreqMin'             , 'FreqMax'           , 'Hmo'                      , 'Nfreq'             , 
-      'Ntheta'          , 'ThetaPeak'     , 'Sigma_Theta'         , 'WidthWaveMaker'    , 'R_sponge_wavemaker'       , 'A_sponge_wavemaker', 
-      'CrestLimit'      , 'TroughLimit'                                                                                                      ])
+   __doc__ = InputFileInterface._get_doc_string('2023/06/06 22:12:56 UTC')
 
-   """
-   Input File Class
-   Auto generated on 
-   """
+   # NOTE: __slots__ appearing before doc string caused issues in Sphinx
+   __slots__ = InputFileInterface._get_slots([
+      'AMP'               , 'AMP_WK'            , 'A_sponge'           , 'A_sponge_wavemaker'       , 'ArrTimeMin'        , 'BATHY_CORRECTION'  , 
+      'BED_DEFORMATION'   , 'BREAKWATER_FILE'   , 'Beta_ref'           , 'BreakWaterAbsorbCoef'     , 'CARTESIAN'         , 'CDsponge'          , 
+      'CFL'               , 'CONSTRUCTION'      , 'CORIOLIS_FILE'      , 'Cbrk1'                    , 'Cbrk2'             , 'Cd'                , 
+      'CrestLimit'        , 'Csp'               , 'DEP'                , 'DEPTH_FILE'               , 'DEPTH_FLAT'        , 'DEPTH_OUT'         , 
+      'DEPTH_TYPE'        , 'DEP_WK'            , 'DIFFUSION_SPONGE'   , 'DIRECT_SPONGE'            , 'DISPERSION'        , 'DX'                , 
+      'DX_FILE'           , 'DY'                , 'DY_FILE'            , 'Delta_WK'                 , 'DepthWaveMaker'    , 'Dphi'              , 
+      'Dtheta'            , 'ETA'               , 'ETA_FILE'           , 'ETA_LIMITER'              , 'EqualEnergy'       , 'FIELD_IO_TYPE'     , 
+      'FIXED_DT'          , 'FRICTION_FILE'     , 'FRICTION_MATRIX'    , 'FRICTION_SPONGE'          , 'FreqMax'           , 'FreqMin'           , 
+      'FreqPeak'          , 'FroudeCap'         , 'Gamma1'             , 'Gamma2'                   , 'Gamma3'            , 'HIGH_ORDER'        , 
+      'Hmo'               , 'HotStartTime'      , 'INI_UVZ'            , 'LAGTIME'                  , 'Lat_South'         , 'Lon_West'          , 
+      'MASK'              , 'MASK_FILE'         , 'Mglob'              , 'MinDepth'                 , 'MinDepthFrc'       , 'Nfreq'             , 
+      'Nglob'             , 'Ntheta'            , 'NumWaveComp'        , 'NumberStations'           , 'OBSTACLE_FILE'     , 'OUT_NU'            , 
+      'OUT_Time'          , 'OutputStartNumber' , 'PARALLEL'           , 'PERIODIC'                 , 'PLOT_INTV'         , 'PLOT_INTV_STATION' , 
+      'PLOT_START_TIME'   , 'PX'                , 'PY'                 , 'PeakPeriod'               , 'RESULT_FOLDER'     , 'ROLLER_EFFECT'     , 
+      'R_sponge'          , 'R_sponge_wavemaker', 'SCREEN_INTV'        , 'SHOW_BREAKING'            , 'SLP'               , 'STATIONS_FILE'     , 
+      'STEADY_TIME'       , 'SWE_ETA_DEP'       , 'Sigma_Theta'        , 'SolitaryPositiveDirection', 'Sponge_east_width' , 'Sponge_north_width', 
+      'Sponge_south_width', 'Sponge_west_width' , 'StationOutputBuffer', 'StretchGrid'              , 'TITLE'             , 'TOTAL_TIME'        , 
+      'T_INTV_mean'       , 'ThetaPeak'         , 'Theta_WK'           , 'Time_Scheme'              , 'Time_ramp'         , 'Tperiod'           , 
+      'TroughLimit'       , 'U'                 , 'U_FILE'             , 'V'                        , 'VISCOSITY_BREAKING', 'V_FILE'            , 
+      'WAVEMAKER'         , 'WAVEMAKER_Cbrk'    , 'WAVEMAKER_VIS'      , 'WAVEMAKER_visbrk'         , 'WAVE_DATA_TYPE'    , 'WID'               , 
+      'WaterLevel'        , 'WaveCompFile'      , 'WaveHeight'         , 'WaveMakerCd'              , 'WidthWaveMaker'    , 'XWAVEMARKER'       , 
+      'Xc'                , 'Xc_WK'             , 'Xslp'               , 'Yc'                       , 'Yc_WK'             , 'Ywidth_WK'         , 
+      'ZALPHA'            , 'a0_Nwave'          , 'alpha_c'            , 'dep_Nwave'                , 'gamma_Nwave'       , 'visbrk'            , 
+      'x1_Nwave'          , 'x2_Nwave'                                                                                                      
+   ])
+
    def __init__(self, **values):
       super().__init__(**values)
 
@@ -48,6 +50,18 @@ class InputFile(InputFileInterface):
          default_value = 'False'      ,
          dependencies  = None         
       )
+      self._TITLE = Parameter(
+         name          = 'TITLE'         ,
+         fullname      = 'TITLE'         ,
+         datatype      = Datatype.STRING ,
+         category      = Category.GENERAL,
+         is_required   = False           ,
+         description   = 'Title for run' ,
+         mask          = Mask.NONE       ,
+         values        = None            ,
+         default_value = 'NO TITLE'      ,
+         dependencies  = None            
+      )
       self._PARALLEL = Parameter(
          name          = 'PARALLEL'                                                  ,
          fullname      = 'Parallel'                                                  ,
@@ -60,9 +74,9 @@ class InputFile(InputFileInterface):
          default_value = 'False'                                                     ,
          dependencies  = None                                                        
       )
-      self._nGlob = Parameter(
-         name          = 'nGlob'                          ,
-         fullname      = 'nGlob'                          ,
+      self._Nglob = Parameter(
+         name          = 'Nglob'                          ,
+         fullname      = 'Nglob'                          ,
          datatype      = Datatype.INTEGER                 ,
          category      = Category.GRID                    ,
          is_required   = True                             ,
@@ -72,9 +86,9 @@ class InputFile(InputFileInterface):
          default_value = None                             ,
          dependencies  = None                             
       )
-      self._mGlob = Parameter(
-         name          = 'mGlob'                          ,
-         fullname      = 'mGlob'                          ,
+      self._Mglob = Parameter(
+         name          = 'Mglob'                          ,
+         fullname      = 'Mglob'                          ,
          datatype      = Datatype.INTEGER                 ,
          category      = Category.GRID                    ,
          is_required   = True                             ,
@@ -95,6 +109,114 @@ class InputFile(InputFileInterface):
          values        = None                                                                                     ,
          default_value = 'True'                                                                                   ,
          dependencies  = None                                                                                     
+      )
+      self._RESULT_FOLDER = Parameter(
+         name          = 'RESULT_FOLDER'      ,
+         fullname      = 'RESULT_FOLDER'      ,
+         datatype      = Datatype.PATH        ,
+         category      = Category.OUTPUT      ,
+         is_required   = False                ,
+         description   = 'Output path for run',
+         mask          = Mask.NONE            ,
+         values        = None                 ,
+         default_value = 'output/'            ,
+         dependencies  = None                 
+      )
+      self._FIELD_IO_TYPE = Parameter(
+         name          = 'FIELD_IO_TYPE'                  ,
+         fullname      = 'FIELD_IO_TYPE'                  ,
+         datatype      = Datatype.ENUM                    ,
+         category      = Category.OUTPUT                  ,
+         is_required   = False                            ,
+         description   = 'Output format for 2D field data',
+         mask          = Mask.RANGE                       ,
+         values        = ['ASCII', 'BINARY']              ,
+         default_value = 'ASCII'                          ,
+         dependencies  = None                             
+      )
+      self._U = Parameter(
+         name          = 'U'                                                 ,
+         fullname      = 'U'                                                 ,
+         datatype      = Datatype.OUT_FLAG                                   ,
+         category      = Category.GENERAL                                    ,
+         is_required   = False                                               ,
+         description   = 'Flag for writing x direction velocities, u,to file',
+         mask          = Mask.NONE                                           ,
+         values        = None                                                ,
+         default_value = 'False'                                             ,
+         dependencies  = None                                                
+      )
+      self._V = Parameter(
+         name          = 'V'                                                  ,
+         fullname      = 'V'                                                  ,
+         datatype      = Datatype.OUT_FLAG                                    ,
+         category      = Category.GENERAL                                     ,
+         is_required   = False                                                ,
+         description   = 'Flag for writing y direction velocities, v, to file',
+         mask          = Mask.NONE                                            ,
+         values        = None                                                 ,
+         default_value = 'False'                                              ,
+         dependencies  = None                                                 
+      )
+      self._ETA = Parameter(
+         name          = 'ETA'                                               ,
+         fullname      = 'ETA'                                               ,
+         datatype      = Datatype.OUT_FLAG                                   ,
+         category      = Category.GENERAL                                    ,
+         is_required   = False                                               ,
+         description   = 'Flag for writing free surface height, eta, to file',
+         mask          = Mask.NONE                                           ,
+         values        = None                                                ,
+         default_value = 'True'                                              ,
+         dependencies  = None                                                
+      )
+      self._MASK = Parameter(
+         name          = 'MASK'                                          ,
+         fullname      = 'MASK'                                          ,
+         datatype      = Datatype.OUT_FLAG                               ,
+         category      = Category.GENERAL                                ,
+         is_required   = False                                           ,
+         description   = 'Flag for writing wet/dry points, mask, to file',
+         mask          = Mask.NONE                                       ,
+         values        = None                                            ,
+         default_value = 'False'                                         ,
+         dependencies  = None                                            
+      )
+      self._DEPTH_OUT = Parameter(
+         name          = 'DEPTH_OUT'                                                                                                    ,
+         fullname      = 'DEPTH_OUT'                                                                                                    ,
+         datatype      = Datatype.OUT_FLAG                                                                                              ,
+         category      = Category.GENERAL                                                                                               ,
+         is_required   = False                                                                                                          ,
+         description   = 'Flag for bathymetey data, dep, to file. Note: Data will include any smoothing and/or water level adjustments.',
+         mask          = Mask.NONE                                                                                                      ,
+         values        = None                                                                                                           ,
+         default_value = 'False'                                                                                                        ,
+         dependencies  = None                                                                                                           
+      )
+      self._OUT_NU = Parameter(
+         name          = 'OUT_NU'                                          ,
+         fullname      = 'OUT_NU'                                          ,
+         datatype      = Datatype.OUT_FLAG                                 ,
+         category      = Category.GENERAL                                  ,
+         is_required   = False                                             ,
+         description   = 'Flag for writing breaking parameter, nu, to file',
+         mask          = Mask.NONE                                         ,
+         values        = None                                              ,
+         default_value = 'False'                                           ,
+         dependencies  = None                                              
+      )
+      self._WaveHeight = Parameter(
+         name          = 'WaveHeight'                                                    ,
+         fullname      = 'WaveHeight'                                                    ,
+         datatype      = Datatype.OUT_FLAG                                               ,
+         category      = Category.STATISTICS                                             ,
+         is_required   = False                                                           ,
+         description   = 'Flag for writing wave statistics; Hmo, Hsig, & Havg;  to file.',
+         mask          = Mask.NONE                                                       ,
+         values        = None                                                            ,
+         default_value = 'False'                                                         ,
+         dependencies  = None                                                            
       )
       self._DEPTH_TYPE = Parameter(
          name          = 'DEPTH_TYPE'                   ,
@@ -539,6 +661,30 @@ class InputFile(InputFileInterface):
          values        = None                                                ,
          default_value = 'False'                                             ,
          dependencies  = [('CARTESIAN', 'False')]                            
+      )
+      self._T_INTV_mean = Parameter(
+         name          = 'T_INTV_mean'                                        ,
+         fullname      = 'T_INTV_mean'                                        ,
+         datatype      = Datatype.FLOAT                                       ,
+         category      = Category.STATISTICS                                  ,
+         is_required   = False                                                ,
+         description   = 'Time interval for calculating wave statistics over.',
+         mask          = Mask.POSITIVE                                        ,
+         values        = None                                                 ,
+         default_value = 999999                                               ,
+         dependencies  = [('WaveHeight', 'True')]                             
+      )
+      self._STEADY_TIME = Parameter(
+         name          = 'STEADY_TIME'                                             ,
+         fullname      = 'STEADY_TIME'                                             ,
+         datatype      = Datatype.FLOAT                                            ,
+         category      = Category.STATISTICS                                       ,
+         is_required   = False                                                     ,
+         description   = 'Spin up time/start time before computing wave statistics',
+         mask          = Mask.POSITIVE                                             ,
+         values        = None                                                      ,
+         default_value = 999999                                                    ,
+         dependencies  = [('WaveHeight', 'True')]                                  
       )
       self._DEPTH_FILE = Parameter(
          name          = 'DEPTH_FILE'                                                                                                      ,
@@ -1032,9 +1178,9 @@ class InputFile(InputFileInterface):
          default_value = None                      ,
          dependencies  = [('WAVEMAKER', 'LEF_SOL')]
       )
-      self._PERODIC = Parameter(
-         name          = 'PERODIC'              ,
-         fullname      = 'PERODIC'              ,
+      self._PERIODIC = Parameter(
+         name          = 'PERIODIC'             ,
+         fullname      = 'PERIODIC'             ,
          datatype      = Datatype.BOOL          ,
          category      = Category.ERR           ,
          is_required   = False                  ,
@@ -1051,7 +1197,7 @@ class InputFile(InputFileInterface):
          category      = Category.ERR                  ,
          is_required   = False                         ,
          description   = 'None'                        ,
-         mask          = Mask.POSITIVE_DEFINITE        ,
+         mask          = Mask.POSITIVE                 ,
          values        = None                          ,
          default_value = '0.1'                         ,
          dependencies  = [('DIFFUSION_SPONGE', 'True')]
@@ -1583,6 +1729,15 @@ class InputFile(InputFileInterface):
       self._ZALPHA.value = val
 
    @property
+   def TITLE(self):
+      """Title for run"""
+      return self._TITLE.value
+
+   @TITLE.setter
+   def TITLE(self, val):
+      self._TITLE.value = val
+
+   @property
    def PARALLEL(self):
       """FORTRAN compile flag for turning on parallel computations."""
       return self._PARALLEL.value
@@ -1592,22 +1747,22 @@ class InputFile(InputFileInterface):
       self._PARALLEL.value = val
 
    @property
-   def nGlob(self):
+   def Nglob(self):
       """Number of points in x direction"""
-      return self._nGlob.value
+      return self._Nglob.value
 
-   @nGlob.setter
-   def nGlob(self, val):
-      self._nGlob.value = val
+   @Nglob.setter
+   def Nglob(self, val):
+      self._Nglob.value = val
 
    @property
-   def mGlob(self):
+   def Mglob(self):
       """Number of points in y direction"""
-      return self._mGlob.value
+      return self._Mglob.value
 
-   @mGlob.setter
-   def mGlob(self, val):
-      self._mGlob.value = val
+   @Mglob.setter
+   def Mglob(self, val):
+      self._Mglob.value = val
 
    @property
    def CARTESIAN(self):
@@ -1617,6 +1772,87 @@ class InputFile(InputFileInterface):
    @CARTESIAN.setter
    def CARTESIAN(self, val):
       self._CARTESIAN.value = val
+
+   @property
+   def RESULT_FOLDER(self):
+      """Output path for run"""
+      return self._RESULT_FOLDER.value
+
+   @RESULT_FOLDER.setter
+   def RESULT_FOLDER(self, val):
+      self._RESULT_FOLDER.value = val
+
+   @property
+   def FIELD_IO_TYPE(self):
+      """Output format for 2D field data"""
+      return self._FIELD_IO_TYPE.value
+
+   @FIELD_IO_TYPE.setter
+   def FIELD_IO_TYPE(self, val):
+      self._FIELD_IO_TYPE.value = val
+
+   @property
+   def U(self):
+      """Flag for writing x direction velocities, u,to file"""
+      return self._U.value
+
+   @U.setter
+   def U(self, val):
+      self._U.value = val
+
+   @property
+   def V(self):
+      """Flag for writing y direction velocities, v, to file"""
+      return self._V.value
+
+   @V.setter
+   def V(self, val):
+      self._V.value = val
+
+   @property
+   def ETA(self):
+      """Flag for writing free surface height, eta, to file"""
+      return self._ETA.value
+
+   @ETA.setter
+   def ETA(self, val):
+      self._ETA.value = val
+
+   @property
+   def MASK(self):
+      """Flag for writing wet/dry points, mask, to file"""
+      return self._MASK.value
+
+   @MASK.setter
+   def MASK(self, val):
+      self._MASK.value = val
+
+   @property
+   def DEPTH_OUT(self):
+      """Flag for bathymetey data, dep, to file. Note: Data will include any smoothing and/or water level adjustments."""
+      return self._DEPTH_OUT.value
+
+   @DEPTH_OUT.setter
+   def DEPTH_OUT(self, val):
+      self._DEPTH_OUT.value = val
+
+   @property
+   def OUT_NU(self):
+      """Flag for writing breaking parameter, nu, to file"""
+      return self._OUT_NU.value
+
+   @OUT_NU.setter
+   def OUT_NU(self, val):
+      self._OUT_NU.value = val
+
+   @property
+   def WaveHeight(self):
+      """Flag for writing wave statistics; Hmo, Hsig, & Havg;  to file."""
+      return self._WaveHeight.value
+
+   @WaveHeight.setter
+   def WaveHeight(self, val):
+      self._WaveHeight.value = val
 
    @property
    def DEPTH_TYPE(self):
@@ -1950,6 +2186,24 @@ class InputFile(InputFileInterface):
    @StretchGrid.setter
    def StretchGrid(self, val):
       self._StretchGrid.value = val
+
+   @property
+   def T_INTV_mean(self):
+      """Time interval for calculating wave statistics over."""
+      return self._T_INTV_mean.value
+
+   @T_INTV_mean.setter
+   def T_INTV_mean(self, val):
+      self._T_INTV_mean.value = val
+
+   @property
+   def STEADY_TIME(self):
+      """Spin up time/start time before computing wave statistics"""
+      return self._STEADY_TIME.value
+
+   @STEADY_TIME.setter
+   def STEADY_TIME(self, val):
+      self._STEADY_TIME.value = val
 
    @property
    def DEPTH_FILE(self):
@@ -2321,13 +2575,13 @@ class InputFile(InputFileInterface):
       self._WaveMakerCd.value = val
 
    @property
-   def PERODIC(self):
+   def PERIODIC(self):
       """None"""
-      return self._PERODIC.value
+      return self._PERIODIC.value
 
-   @PERODIC.setter
-   def PERODIC(self, val):
-      self._PERODIC.value = val
+   @PERIODIC.setter
+   def PERIODIC(self, val):
+      self._PERIODIC.value = val
 
    @property
    def Csp(self):

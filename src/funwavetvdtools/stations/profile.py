@@ -1,13 +1,15 @@
 
-from funwavetvdtools.error import FunException
-import funwavetvdtools.validation as fv
-
-import funwavetvdtools.stations.runup as ru
-import funwavetvdtools.stations.overtopping as ot
-from funwavetvdtools.stations.stations import Stations
+import copy
 
 import numpy as np
-from shapely import Polygon, LineString
+# Add module swap for shapely version
+from shapely.geometry import LineString, Polygon
+
+import funwavetvdtools.stations.runup as ru
+import funwavetvdtools.validation as fv
+from funwavetvdtools.error import FunException
+from funwavetvdtools.stations.stations import Stations
+
 
 class Profile(Stations):
 
@@ -46,18 +48,22 @@ class Profile(Stations):
     def _check_profile_specifed(self, s):
         raise NotImplementedError
 
-    def __init__(self, stations, numbers, mode='stations', profile_pts=None):
+    def __init__(self, stations, numbers, s0=None, mode='stations', profile_pts=None):
+
+
+        # Wet/Dry reference point
+        self._s0 = s0
 
         fv.check_type(stations, Stations, 'stations')
         numbers = fv.convert_pos_def_ints(numbers, 'numbers')
 
         ndims = numbers.ndim 
         if ndims != 1:
-            desc = "The number of dimensions in input argument numbers must be 1, got '%s'." % ndims
+            "The number of dimensions in input argument numbers must be 1, got '%s'." % ndims
             raise FunException(msg, ValueError)
 
         self._raw = copy.copy(stations)
-        self._raw._list = [ stations.list[n-1] for n in numbers]
+        self._raw._list = stations.at(numbers)
 
         if mode == 'stations':
             self._check_profile_stations()
@@ -70,25 +76,33 @@ class Profile(Stations):
             raise FunException(msg, ValueError)
 
 
-    def _prep_runup_input(self):
+    def _prep_runup_input(self, is_offset):
 
+        # IDEA: Added callback function to Station to propagate t and n to Stations
         x = self._s
         h = self.h
         nt = self.list[0].n
+        t = self.list[0].t
         ns = len(self.list)
         eta = np.zeros([ns, nt])
+
+
+        s0 = self._s0 if is_offset else None
         for i in range(ns): eta[i,:] = self.list[i].eta
 
-        return x, h, eta 
+        return x, h, eta, t, s0
 
-    def compute_runup(self):
+    def compute_runup(self, r_depth=0.002, t_min=None, t_max=None, is_offset=True):
 
-        x, h, eta = self._prep_runup_input()
-        return ru.compute(x, h, eta)
+        
+        x, h, eta, t, s0 = self._prep_runup_input(is_offset)
+        return ru.compute(x, h, eta, s0, r_depth, t, t_min, t_max) 
 
-    def compute_runup_with_stats(self):
-        x, h, eta = self._prep_runup_input()
-        return ru.compute_with_stats(x, h, eta)
+    def compute_runup_with_stats(self, r_depth=0.002, t_min=None, t_max=None, is_offset=True,
+                                 upper_centile=2 , peak_width=2):
+
+        x, h, eta, t, s0 = self._prep_runup_input(is_offset)
+        return ru.compute_with_stats(x, h, eta, s0, r_depth, t, t_min, t_max, upper_centile, peak_width) 
 
 
 class UnitRectangle:
@@ -126,7 +140,7 @@ def generate_stations(x, y, x1, x2, y1, y2):
     # Computing grid indices that bound  line/profile 
     i1, i2 = get_outer_indices(x, x1, x2)
     j1, j2 = get_outer_indices(y, y1, y2)
-    
+   
     # Generating Polygon rectangles of each grid sqaure
     idxs = np.concatenate([np.array([(i, j) for i in range(i1, i2)]) for j in range(j1, j2)])
     rects = [UnitRectangle(x, i, y, j) for i, j in idxs]
@@ -138,7 +152,7 @@ def generate_stations(x, y, x1, x2, y1, y2):
     sw_idxs = [rect.sw_vertex for rect in rects]
 
     # Removing duplicate station indices 
-    sta_idxs = np.unique(np.concatenate([rect.vertices for rect in rects))
+    sta_idxs = np.unique(np.concatenate([rect.vertices for rect in rects]))
 
     return sta_idxs, sw_idxs
 

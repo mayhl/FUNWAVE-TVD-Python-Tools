@@ -9,12 +9,13 @@
 #
 
 
-from funwavetvdtools.error import FunException
-import funwavetvdtools.validation as fv
+import warnings
 
 import numpy as np
 from scipy.signal import find_peaks
 
+import funwavetvdtools.validation as fv
+from funwavetvdtools.error import FunException
 
 #class Runup():
 
@@ -23,7 +24,7 @@ def _all_same(arr):
     arr = fv.convert_array(arr, 'arr')
     return np.all(arr[1:] == arr[0])
 
-def _compute_single(x, h, eta, r_depth=None):
+def _compute_single(x, h, eta, x0, r_depth):
 
     ne = len(eta)
     nh = len(h)
@@ -35,7 +36,6 @@ def _compute_single(x, h, eta, r_depth=None):
                 "respectively." % ( nx, nh, ne)
         raise FunException(msg, ValueError)    
 
-    n = ne 
 
     # NOTE: Add filter for h < 1 but check for continous range
     if r_depth is None:
@@ -45,27 +45,32 @@ def _compute_single(x, h, eta, r_depth=None):
     m, c = np.polyfit(x, -h, 1)
     w_depth = eta + h    
 
-
     r_depth = 0.002
-    if m < 0: # slopes up
-        idx = np.argmax(w_depth>=r_depth)
-        if idx == 0: return eta[0], x[0], r_depth  
-    else: # slopes down 
-        idx = np.argmin(w_depth>=r_depth)
+    thresh = w_depth - r_depth
+    sign_changes = thresh[:-1]*thresh[1:] < 0
 
+    ic = np.arange(len(thresh)-1)[sign_changes]
+    nsc = len(ic)
+    
+    if nsc == 0:
+        warnings.warn("Runup: No wet/dry line found, setting to NaN.")
+        return np.nan, np.nan, r_depth
 
-    si = idx - 1
-    ei = idx + 2
+    if nsc > 1:
+        warnings.warn("Runup: Found multiple wet/dry lines. Using point furthest up slope")
+        ic = ic[-1] if m > 0 else ic[0]
+    else:
+        ic = ic[0]
+
+    si = ic - 2
+    ei = ic + 3
 
     runup = np.interp(r_depth, w_depth[si:ei], eta[si:ei])
-    runup_x = np.interp(r_depth, w_depth[si:ei], x[si:ei])
-
-    #runup   = eta[idx]
-    #runup_x = x[idx]
+    runup_x = np.interp(r_depth, w_depth[si:ei], x[si:ei]) - x0
 
     return runup, runup_x, r_depth 
 
-def _compute_timeseries(x, h, eta, r_depth=None):
+def _compute_timeseries(x, h, eta, x0, r_depth):
 
     nx = len(x)
     shph = h.shape
@@ -104,15 +109,15 @@ def _compute_timeseries(x, h, eta, r_depth=None):
 
     if ndh == 2:
         for i in range(nt):
-            runup[i], runup_x[i], r_depth2[i] = _compute_single(x, h[:,i], eta[:,i], r_depth)
+            runup[i], runup_x[i], r_depth2[i] = _compute_single(x, h[:,i], eta[:,i], x0, r_depth)
     else:
         for i in range(nt):
-            runup[i], runup_x[i], r_depth2[i] = _compute_single(x, h, eta[:,i], r_depth)
+            runup[i], runup_x[i], r_depth2[i] = _compute_single(x, h, eta[:,i], x0, r_depth)
 
     return runup, runup_x, r_depth2
 
 
-def _check_args(x, h, eta, r_depth=None):
+def _check_args(x, h, eta, x0, r_depth, t, t_min, t_max):
 
 
     x   = fv.convert_array(x, 'x')
@@ -122,6 +127,10 @@ def _check_args(x, h, eta, r_depth=None):
     ndx = x.ndim
     ndh = h.ndim
     nde = eta.ndim
+
+    
+    if x0 is None: x0 = 0.0
+
     
     if ndx != 1:
         msg = "The dimensions of array 'x' must be 1, got %d." % ndx[0]
@@ -134,20 +143,56 @@ def _check_args(x, h, eta, r_depth=None):
     if nde != 1 and nde != 2:
         msg = "The dimensions of array 'eta' must be either 1 or 2, got %d." % nde
         raise FunException(msg, TypeError)
-    
-    return x, h, eta, r_depth, nde
-
-def compute(x, h, eta, r_depth=None):
 
 
-    x, h, eta, r_depth, nde = _check_args(x, h, eta)
+    is_t_none = t is None
+    is_t0_none = t_min is None
+    is_t1_none = t_max is None
+    def get_t_state(t, t_min, t_max):
+        if is_t_none and (not is_t0_none or not is_t1_none):
+            warnings.warn("Runup: t_min and/or t_max specified without t being specified, ignoring bound(s).")
+            return [None] * 5
+
+        if not is_t_none and (is_t0_none and is_t1_none): 
+            warnings.warn("Runup: t specified without t_min or t_max being specified, ignoring t.")
+            
+            return [t, None, None, 0, len(t)]
+
+        if is_t_none: return [None] * 5
+
+        if is_t0_none: t_min = np.min(t) 
+        if is_t1_none: t_max = np.max(t)
+
+        i0 = np.argmin(np.abs(t-t_min))
+        i1 = np.argmin(np.abs(t-t_max)) + 2
+
+        return t, t_min, t_max, i0, i1
+
+    if nde == 2 or ndh == 2:
+
+        is_t_none = t is None
+        is_t0_none = t_min is None
+        is_t1_none = t_max is None
+
+        t, t_min, t_max, i0, i1 = get_t_state(t, t_min, t_max)
+
+        if not t is None:
+            t = t[i0:i1]
+            if nde == 2 : eta = eta[:,i0:i1]
+            if ndh == 2 : h = h[:,i0:i1]
+
+    return t, x, h, eta, x0, r_depth, nde
+
+def compute(x, h, eta, x0=None, r_depth=None, t=None, t_min=None, t_max=None):
+
+    t, x, h, eta, x0, r_depth, nde = _check_args(x, h, eta, x0, r_depth, t, t_min, t_max)
 
     if nde == 1:
-        return _compute_single(x, h, eta, r_depth)
+        return _compute_single(x, h, eta, x0, r_depth)
     elif nde == 2:
-        return _compute_timeseries(x, h, eta, r_depth)
+        return (t,) + _compute_timeseries(x, h, eta, x0, r_depth)
     else:
-        msg = "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
+        "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
         raise FunException(brief, TypeError)
 
 
@@ -165,19 +210,19 @@ def compute_stats(runup, upper_centile=2, peak_width=2):
 
 
 
-def compute_with_stats(x, h, eta, r_depth=None, \
-                        t=None, t_max=None, t_Min=None, \
+def compute_with_stats(x, h, eta, x0=None, r_depth=None, \
+                        t=None, t_min=None, t_max=None, \
                         upper_centile=2, peak_width=2):
 
-    x, h, eta, r_depth, nde = _check_args(x, h, eta)
-
-
+    print( eta.shape)
+    t, x, h, eta, x0, r_depth, nde = _check_args(x, h, eta, x0, r_depth, t, t_min, t_max)
+    print( eta.shape)
     if nde == 2:
-        runup, runup_x, r_depth = _compute_timeseries(x, h, eta, r_depth)
+        runup, runup_x, r_depth = _compute_timeseries(x, h, eta, x0, r_depth)
         r_percent = compute_stats(runup, upper_centile, peak_width)
         setup = np.mean(runup)
 
-        return runup, runup_x, r_depth, r_percent, setup
+        return t, runup, runup_x, r_depth, r_percent, setup
 
     else:
         msg = "The number of dimensions of the input array 'eta' must be either 1 or 2, got %d." % nd
@@ -188,7 +233,7 @@ def compute_with_stats(x, h, eta, r_depth=None, \
 
 if __name__ == "__main__":
 
-    from funwavetvdtools.stations import Profile, Stations
+    pass
     
 
 
