@@ -124,7 +124,7 @@ def convert_number(val, name):
 def convert_flt(val, name):
 
     if not _is_flt(val):
-        msg = "Input argument %s is not a float, got type %s." % (name, type(val))
+        msg = "Input argument %s with value %s is not a float, got type %s." % (name, val, type(val))
         raise FunException(msg, TypeError)
 
     return float(val)
@@ -240,6 +240,18 @@ def check_max_val_int(val, max_val, name):
         raise FunException(msg, ValueError)
 
     return val
+
+
+def check_unique_list(vals, name):
+
+    def count(vals, val): return np.sum(np.array(vals)==val)
+
+    uvals = np.unique(vals)
+    if len(uvals) == len(vals): return
+
+    dups = [val for val in vals if count(vals, val) > 1]
+    msg = "List '%s' contains duplicate entries for %s." % (name, dups)
+    raise FunException(msg, ValueError)
 
 
 def is_in_list(val, name, values):

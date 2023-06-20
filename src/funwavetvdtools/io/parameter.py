@@ -28,7 +28,9 @@ from functools import partial
 import funwavetvdtools.validation as fv
 from funwavetvdtools.error import FunException
 
-
+_LARGE_VAL = 99999
+_LARGE_STR = "LARGE"
+ 
 class Datatype(Enum):
     """Datatype enumeration for Parameter class."""
 
@@ -48,29 +50,25 @@ class Datatype(Enum):
     BOOL    = 7
     #: 2D field data output flag 
     OUT_FLAG = 8
-    def cast(self, val):
-
-        maps={
-            Datatype.FLAG   : str,
-            Datatype.STRING : str,
-            Datatype.FLOAT  : float,
-            Datatype.INTEGER: int,
-            Datatype.PATH   : str,
-            Datatype.ENUM   : str,
-            Datatype.BOOL   : bool
-        }
          
     @classmethod 
     def _cast_2_FUNWAVE_bool(cls, val):
         fv.check_type(val, bool, '_cast_2_FUNWAVE_bool')
         return 'T' if val else 'F'
-    
+   
+    @classmethod
+    def _cast_2_FUNWAVE_large_value(cls, val):
+        if val == _LARGE_VALUE: return _LARGE_STR 
+        return val
+ 
     @classmethod
     def _cast_2_FUNWAVE_int(cls, val):  
+        val = cls.__cast_2_FUNWAVE_large_value(val)
         return "%d" % fv.convert_int(val, '_cast_2_FUNWAVE_int')        
 
     @classmethod
     def _cast_2_FUNWAVE_flt(cls, val):
+        val = cls.__cast_2_FUNWAVE_large_value(val)
         return "%f" % fv.convert_flt(val, '_cast_2_FUNWAVE_flt')
 
     @classmethod
@@ -111,26 +109,36 @@ class Datatype(Enum):
             raise FunException(msg, TypeError)
 
 
-        val = val.lower().strip()
+        lval = val.lower().strip()
 
-        if val == 'true': return True
-        if val == 'false': return False
+        if lval == 'true' : return True
+        if lval == 'false': return False
+        if lval == 'yes'  : return True
+        if lval == 'no'   : return False
+        
 
+        if len(lval) == 1:
+            if lval == 't': return True
+            if lval == 'f': return False 
+            if lval == 'y': return True
+            if lval == 'n': return False
 
-        if len(val) == 1:
-            if val == 't': return True
-            if val == 'f': return False 
-
-
-        msg = "Unable to cast '%s%' to a bool." % val
+        msg = "Unable to cast '%s' to a bool." % val
         raise FunException(msg, TypeError)
 
     @classmethod
+    def _cast_large_value(cls, val):
+        if (type(val) is str) and (val.strip() == _LARGE_STR): return _LARGE_VALUE
+        return val
+
+    @classmethod
     def _cast_int(cls, val):
+        val = cls._cast_large_value(val)
         return fv.convert_int(val, '_cast_int')
 
     @classmethod
     def _cast_flt(cls, val):
+        val = cls._cast_large_value(val)
         return fv.convert_flt(val, '_cast_flt')
 
     @classmethod
@@ -143,6 +151,7 @@ class Datatype(Enum):
         maps = {
             cls.FLAG    : cls._cast_bool,
             cls.STRING  : cls._cast_str,
+            cls.INTEGER : cls._cast_int,
             cls.FLOAT   : cls._cast_flt,
             cls.PATH    : cls._cast_str,
             cls.ENUM    : cls._cast_str,
@@ -157,7 +166,7 @@ class Datatype(Enum):
         return maps[enum](val)
 
     def cast(self, val):
-        return Datatype.cast(self, val)
+        return Datatype._cast(self, val)
 
 
 class Mask(Enum):
@@ -356,6 +365,7 @@ class Category(Enum):
         return self in type(self).essential_modules()
 
 
+
 class Dependency:
 
     __slots__ = ('_name', '_values', '_param')
@@ -390,8 +400,8 @@ class Parameter():
  
     :param name:          Name of parameter in FUNWAVE-TVD input file.
     :type  name:          str
-    :param fullname:      Descriptive name for parameter.
-    :type  fullname:      str
+    :param full_name:      Descriptive name for parameter.
+    :type  full_name:      str
     :param datatype:      Datatype Enum value for parameter datatype
     :type  datatype:      Datatype
     :param category:      Category Enum value for parameter subttype.
@@ -412,24 +422,25 @@ class Parameter():
     """
 
     # NOTE: __slots__ appearing before doc string caused issues in Sphinx
-    __slots__ = ('_name', '_fullname', '_datatype', '_category','_description', '_is_required',
-                 '_default_value', '_value', '_values', '_dependencies', '_dependents','_mask', '_mask_func')
-    def __init__(self, name, fullname, datatype, category, is_required, description, mask, values=None, default_value=None, dependencies=None):
+    __slots__ = ('_name', '_full_name', '_datatype', '_category','_description', '_is_required',
+                 '_default_value', '_value', '_values', '_dependencies', '_dependents','_mask', '_mask_func', '_is_deprecated', '_fortran_name', '_units' )
+    def __init__(self, name, full_name, datatype, category, is_required, description, mask, values=None, default_value=None, dependencies=None, is_deprecated=False, fortran_name=None, is_essential=False, units=None):
         #: Doc comment for instance attribute qux.
         self._name          = name
-        self._fullname      = fullname
+        self._full_name     = full_name
         self._datatype      = datatype
         self._category      = category
         self._description   = description
         self._is_required   = is_required
         self._default_value = default_value
         self._values        = values 
-        
+        self._is_deprecated = is_deprecated 
         self._dependencies = self._init_dependencies(dependencies)
         self._dependents = None
         self._mask = mask
+        self._units = units
         self._mask_func = Mask.get_dt_mask(mask, datatype, values)
-
+        self._fortran_name = fortran_name
         self._value = None
 
         if default_value is None: 
@@ -490,7 +501,7 @@ class Parameter():
     @value.setter
     def value(self, val):
         print(val)
-        name = "Parameter %s" % self.fullname 
+        name = "Parameter %s" % self.full_name 
         val = self._mask_func(val, name)
         self._value = val
 
@@ -500,12 +511,10 @@ class Parameter():
         return None if val is None else datatype.cast(self.val)
 
     
-
-
     def is_valid_val(self, val):
 
         try:
-            name = "Parameter %s" % self.fullname
+            name = "Parameter %s" % self.full_name
             val = self._mask_func(val, name)
             return True
         except Exception as e: 
@@ -576,12 +585,12 @@ class Parameter():
         """
         return self._name
     @property
-    def fullname(self):
+    def full_name(self):
         """Getter/property for descriptive name.
 
         :rtype: str
         """
-        return self._fullname
+        return self._full_name
 
     @property
     def datatype(self):
@@ -662,7 +671,7 @@ class Parameter():
     def to_dict(self, ignore_keys=None):
 
 
-        literal_keys = ['name', 'fullname', 'datatype', 'category', 'is_required', 'description', 'mask', 'values', 'default_value']
+        literal_keys = ['name', 'full_name', 'datatype', 'category', 'is_required', 'description', 'mask', 'values', 'default_value']
 
         info = {k: getattr(self, "_%s" % k) for k in literal_keys}
 
