@@ -1,0 +1,154 @@
+Dependent,Parent,Value
+PX,PARALLEL,T
+PY,PARALLEL,T
+DX,CARTESIAN,T
+DY,CARTESIAN,T
+StretchGrid,CARTESIAN,F
+DX_FILE,StretchGrid,T
+DY_FILE,StretchGrid,T
+CORIOLIS_FILE,StretchGrid,F
+Lon_West,StretchGrid,T
+Lat_South,StretchGrid,T
+Dphi,StretchGrid,T
+Dtheta,StretchGrid,T
+T_INTV_mean,WaveHeight,T
+STEADY_TIME,WaveHeight,T
+DEPTH_FILE,DEPTH_TYPE,D
+DEPTH_FLAT,DEPTH_TYPE,FLAT
+SLP,DEPTH_TYPE,S
+Xslp,DEPTH_TYPE,S
+BED_DEFORMATION,INI_UVZ,T
+ETA_FILE,INI_UVZ,T
+U_FILE,INI_UVZ,T
+V_FILE,INI_UVZ,T
+MASK_FILE,INI_UVZ,T
+HotStartTime,INI_UVZ,T
+OutputStartNumber,INI_UVZ,T
+AMP,WAVEMAKER,LEFT_SOL
+DEP,WAVEMAKER,LEFT_SOL
+LAGTIME,WAVEMAKER,LEFT_SOL
+NumWaveComp,WAVEMAKER,WK_TIME
+PeakPeriod,WAVEMAKER,WK_TIME
+WaveCompFile,WAVEMAKER,"['WK_TIME', 'WK_NEW_DATA2D', 'WK_DATA2D']"
+WaveCompFile,WAVE_DATA_TYPE,DATA
+Xc_WK,WAVEMAKER,WK_TIME
+Yc_WK,WAVEMAKER,WK_TIME
+DEP_WK,WAVEMAKER,WK_TIME
+Time_ramp,WAVEMAKER,WK_TIME
+Delta_WK,WAVEMAKER,WK_TIME
+Ywidth_WK,WAVEMAKER,WK_TIME
+SolitaryPositiveDirection,WAVEMAKER,INI_SOL
+XWAVEMARKER,WAVEMAKER,INI_SOL
+x1_Nwave,WAVEMAKER,N_WAVE
+x2_Nwave,WAVEMAKER,N_WAVE
+a0_Nwave,WAVEMAKER,N_WAVE
+gamma_Nwave,WAVEMAKER,N_WAVE
+dep_Nwave,WAVEMAKER,N_WAVE
+Xc,WAVEMAKER,INI_REC
+Yc,WAVEMAKER,INI_REC
+WID,WAVEMAKER,INI_REC
+Tperiod,WAVEMAKER,WK_REG
+AMP_WK,WAVEMAKER,WK_REG
+Theta_WK,WAVEMAKER,WK_REG
+FreqPeak,WAVEMAKER,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_IRR']"
+FreqPeak,WAVE_DATA_TYPE,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D']"
+FreqMin,WAVEMAKER,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_IRR']"
+FreqMin,WAVE_DATA_TYPE,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D']"
+FreqMax,WAVEMAKER,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_IRR']"
+FreqMax,WAVE_DATA_TYPE,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D']"
+Hmo,WAVEMAKER,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_IRR']"
+Hmo,WAVE_DATA_TYPE,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D']"
+Nfreq,WAVEMAKER,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_IRR']"
+Nfreq,WAVE_DATA_TYPE,"['WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D']"
+Ntheta,WAVEMAKER,"['WK_IRR', 'JON_2D', 'WK_NEW_IRR']"
+Ntheta,WAVE_DATA_TYPE,"['WK_IRR', 'JON_2D']"
+ThetaPeak,WAVEMAKER,"['WK_IRR', 'JON_2D', 'WK_NEW_IRR']"
+ThetaPeak,WAVE_DATA_TYPE,"['WK_IRR', 'JON_2D']"
+Sigma_Theta,WAVEMAKER,"['WK_IRR', 'JON_2D', 'WK_NEW_IRR']"
+Sigma_Theta,WAVE_DATA_TYPE,"['WK_IRR', 'JON_2D']"
+alpha_c,WAVEMAKER,W
+EqualEnergy,WAVEMAKER,WK_IRR
+WAVE_DATA_TYPE,WAVEMAKER,ABS
+DepthWaveMaker,WAVEMAKER,ABS
+WidthWaveMaker,WAVE_DATA_TYPE,A
+R_sponge_wavemaker,WAVE_DATA_TYPE,A
+A_sponge_wavemaker,WAVE_DATA_TYPE,A
+ETA_LIMITER,WAVEMAKER,LEF_SOL
+CrestLimit,ETA_LIMITER,T
+TroughLimit,ETA_LIMITER,T
+WaveMakerCd,WAVEMAKER,LEF_SOL
+PERIODIC,CARTESIAN,T
+Csp,DIFFUSION_SPONGE,T
+CDsponge,FRICTION_SPONGE,T
+Sponge_west_width,DIRECT_SPONGE,True
+Sponge_west_width,DIFFUSION_SPONGE,True
+Sponge_west_width,FRICTION_SPONGE,True
+Sponge_east_width,DIRECT_SPONGE,True
+Sponge_east_width,DIFFUSION_SPONGE,True
+Sponge_east_width,FRICTION_SPONGE,True
+Sponge_south_width,DIRECT_SPONGE,True
+Sponge_south_width,DIFFUSION_SPONGE,True
+Sponge_south_width,FRICTION_SPONGE,True
+Sponge_north_width,DIRECT_SPONGE,True
+Sponge_north_width,DIFFUSION_SPONGE,True
+Sponge_north_width,FRICTION_SPONGE,True
+R_sponge,DIRECT_SPONGE,True
+R_sponge,DIFFUSION_SPONGE,True
+R_sponge,FRICTION_SPONGE,True
+A_sponge,DIRECT_SPONGE,True
+A_sponge,DIFFUSION_SPONGE,True
+A_sponge,FRICTION_SPONGE,True
+BreakWaterAbsorbCoef,BREAKWATER_FILE,D
+Gamma2,CARTESIAN,T
+Beta_ref,CARTESIAN,True
+Beta_ref,ZALPHA,True
+Gamma3,CARTESIAN,T
+FRICTION_FILE,FRICTION_MATRIX,T
+Cd,FRICTION_MATRIX,F
+ArrTimeMin,OUT_Time,T
+PLOT_INTV_STATION,NumberStations,P
+StationOutputBuffer,NumberStations,P
+STATIONS_FILE,NumberStations,P
+SWE_ETA_DEP,VISCOSITY_BREAKING,F
+Cbrk1,SHOW_BREAKING,T
+Cbrk2,SHOW_BREAKING,T
+visbrk,WAVEMAKER_VIS,T
+WAVEMAKER_visbrk,WAVEMAKER_VIS,T
+VESSEL_FOLDER,VESSEL,T
+NumVessel,VESSEL,T
+DEEP_DRAFT_VESSEL,VESSEL,T
+CLEARANCE,DEEP_DRAFT_VESSEL,T
+MaskMethod,DEEP_DRAFT_VESSEL,T
+FrictionMethod,DEEP_DRAFT_VESSEL,T
+CdDeepDraft,FrictionMethod,T
+ViscosityMethod,DEEP_DRAFT_VESSEL,T
+VisDeepDraft,ViscosityMethod,T
+Sed_Scheme,SEDIMENT,T
+PLOT_INTV_SEDIMENT,SEDIMENT,T
+CohesiveSediment,SEDIMENT,T
+D50,CohesiveSediment,F
+Sdensity,CohesiveSediment,F
+n_porosity,CohesiveSediment,F
+WS,CohesiveSediment,F
+Shields_cr,CohesiveSediment,F
+Shields_cr_bedload,CohesiveSediment,F
+Kappa1,SEDIMENT,S
+Kappp2,SEDIMENT,S
+MinDepthPickup,SEDIMENT,T
+k_coh,CohesiveSediment,T
+Tau_cr_coh,CohesiveSediment,T
+Tau_crd_coh,CohesiveSediment,T
+a_coh,CohesiveSediment,T
+b_coh,CohesiveSediment,T
+n_coh,CohesiveSediment,T
+m_coh,CohesiveSediment,T
+E_coh,CohesiveSediment,T
+alpha_coh,CohesiveSediment,T
+SoftBed,CohesiveSediment,T
+Bed_Change,SEDIMENT,T
+Hard_bottom,SEDIMENT,T
+Hard_bottom_file,SEDIMENT,T
+Morph_step,Bed_Change,True
+Morph_step,Hard_bottom_file,
+Avalanche,SEDIMENT,T
+Tan_phi,Avalanche,T

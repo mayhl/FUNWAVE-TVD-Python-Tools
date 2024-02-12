@@ -1,0 +1,191 @@
+Name,Is Deprecated,Full Name,Datatype,Category,Units,Is Required,Default Value,Description,Mask Type,Mask Values,Skill Floor,Python Name
+CHECK_MASS_CONSERVATION,False,CHECK_MASS_CONSERVATION,Flag,['Central'],,False,FALSE,FORTRAN compile flag to enforce conservation of mass ,,,Beginner,CHECK_MASS_CONSERVATION
+ZALPHA,False,ZALPHA,Flag,['Central'],,False,FALSE,???,,,Beginner,ZALPHA
+TITLE,False,TITLE,String,['Central'],,False,NO TITLE,Title for run,,,Beginner,TITLE
+PARALLEL,False,Parallel,Flag,['Parallel'],,False,FALSE,FORTRAN compile flag for turning on parallel computations.,,,Beginner,PARALLEL
+PX,False,Parallel,Integer,['Parallel'],,False,1,Number for parallel cores/threads to use in x direction,Positive Definite,,Beginner,PX
+PY,False,Parallel,Integer,['Parallel'],,False,1,Number for parallel cores/threads to use in y direction,Positive Definite,,Beginner,PY
+Nglob,False,Nglob,Integer,"['Central', 'Grid']",,True,,Number of points in x direction,Positive Definite,,Beginner,Nglob
+Mglob,False,Mglob,Integer,"['Central', 'Grid']",,True,,Number of points in y direction,Positive Definite,,Beginner,Mglob
+CARTESIAN,False,Cartesian,Flag,"['Central', 'Grid']",,True,TRUE,FORTRAN compile flag for switch between cartesian coordinates and spherical coordinates,,,Beginner,CARTESIAN
+DX,False,DX,Float,"['Central', 'Grid']",Meters,True,,Spatial resolution in the x direction,Positive Definite,,Beginner,DX
+DY,False,DY,Float,"['Central', 'Grid']",Meters,True,,Spatial resolution in the y direction,Positive Definite,,Beginner,DY
+StretchGrid,False,StretchGrid,Boolean,"['Spherical', 'Grid']",,False,FALSE,Flag for using a grid varying grid point spacing. ,,,Beginner,StretchGrid
+DX_FILE,False,DX FILE,Path,"['Spherical', 'Grid']",,True,,Path to text file of spacing between x grid points,,,Beginner,DX_FILE
+DY_FILE,False,DY_FILE,Path,"['Spherical', 'Grid']",,True,,Path to text file of spacing between y grid points,,,Beginner,DY_FILE
+CORIOLIS_FILE,False,CORIOLIS_FILE,Path,"['Spherical', 'Grid']",,True,,Path to text file of Coriolis parameters at each grid point.,,,Beginner,CORIOLIS_FILE
+Lon_West,False,Lon_West,Float,"['Spherical', 'Grid']",degrees,True,,Longitude of west boundary in degrees ,Range,"[-180, 180]",Beginner,Lon_West
+Lat_South,False,Lat_South,Float,"['Spherical', 'Grid']",degrees,True,,Latitude of south boundary in degrees.,Range,"[-180, 180]",Beginner,Lat_South
+Dphi,False,Dphi,Float,"['Spherical', 'Grid']",degrees,True,,Spatial resolution in degree in the logitude direction,Positive Definite,,Beginner,Dphi
+Dtheta,False,Dtheta,Float,"['Spherical', 'Grid']",degrees,True,,Spatial resolution in degree in the latitude direction,Positive Definite,,Beginner,Dtheta
+RESULT_FOLDER,False,RESULT_FOLDER,Path,"['Central', 'Output']",,False,output/,Output path for run,,,Beginner,RESULT_FOLDER
+FIELD_IO_TYPE,False,FIELD_IO_TYPE,Enum,"['Central', 'Output']",,False,ASCII,Output format for 2D field data,Range,"['ASCII', 'BINARY']",Beginner,FIELD_IO_TYPE
+U,False,U,Output Flag,['Central'],,False,FALSE,"Flag for writing x direction velocities, u,to file",,,Beginner,U
+V,False,V,Output Flag,['Central'],,False,FALSE,"Flag for writing y direction velocities, v, to file",,,Beginner,V
+ETA,False,ETA,Output Flag,['Central'],,False,TRUE,"Flag for writing free surface height, eta, to files eta_xxxxx",,,Beginner,ETA
+MASK,False,MASK,Output Flag,['Central'],,False,FALSE,"Flag for writing wet/dry points, mask, to files mask_xxxxx",,,Beginner,MASK
+DEPTH_OUT,False,DEPTH_OUT,Output Flag,['Central'],,False,FALSE,"Flag for bathymetey data, dep, to file dep.out . Note: Data will include any smoothing and/or water level adjustments.",,,Beginner,DEPTH_OUT
+OUT_NU,False,OUT_NU,Output Flag,['Central'],,False,FALSE,"Flag for writing breaking parameter, nu, to files nu_xxxxx",,,Beginner,OUT_NU
+MASK9,False,MASK9,Output Flag,['Central'],,False,FALSE,"Flag for writing Boussinesq/NSWE mask, mask9, to files mask9_xxxxx",,,Beginner,MASK9
+SourceX,False,SourceX,Output Flag,['Central'],,False,FALSE,Flag for writing source terms in x direction to file,,,Beginner,SourceX
+SourceY,False,SourceY,Output Flag,['Central'],,False,FALSE,Flag for writing source terms in y direction to file,,,Beginner,SourceY
+P,False,P ,Output Flag,['Central'],,False,FALSE,Flag for writing momentum flux in x direction to file,,,Beginner,P
+Q,False,Q,Output Flag,['Central'],,False,FALSE,Flag for writing momentum flux in y direction to file,,,Beginner,Q
+Fx,False,Fx,Output Flag,['Central'],,False,FALSE,"Flag for writing numerical flux, F, in x direction to file",,,Beginner,Fx
+Fy,False,Fy,Output Flag,['Central'],,False,FALSE,"Flag for writing numerical flux, F, in y direction to file",,,Beginner,Fy
+Gx,False,Gx,Output Flag,['Central'],,False,FALSE,"Flag for writing numerical flux, G, in x direction to file",,,Beginner,Gx
+Gy,False,Gy,Output Flag,['Central'],,False,FALSE,"Flag for writing numerical flux, G, in y direction to file",,,Beginner,Gy
+AGE,False,AGE,Output Flag,['Central'],,False,FALSE,Flag for writing breaking age to files age_xxxxx.,,,Beginner,AGE
+WaveHeight,False,WaveHeight,Output Flag,['Statistics'],,False,FALSE,"Flag for writing wave statistics; Hmo, Hsig, & Havg;  to file.",,,Beginner,WaveHeight
+T_INTV_mean,False,T_INTV_mean,Float,['Statistics'],seconds,False,LARGE,Time interval for calculating wave statistics over.,Positive,,Beginner,T_INTV_mean
+STEADY_TIME,False,STEADY_TIME,Float,['Statistics'],seconds,False,LARGE,Spin up time/start time before computing wave statistics,Positive,,Beginner,STEADY_TIME
+DEPTH_TYPE,False,DEPTH_TYPE,Enum,"['Central', 'Bathymetry']",,False,FLAT,Bathymetry/Depth type to use.,Range,"['FLAT', 'DATA', 'SLOPE']",Beginner,DEPTH_TYPE
+DEPTH_FILE,False,DEPTH_FILE,Path,"['Central', 'Bathymetry']",,True,,"Path to text file of still water level depth at each grid point. Note, positive values denote below water level.",,,Beginner,DEPTH_FILE
+DEPTH_FLAT,False,DEPTH_FLAT,Float,"['Central', 'Bathymetry']",Meters,False,10,"Depth of flat region in bathymetry. Note, positive values denote below water level. ",Positive Definite,,Beginner,DEPTH_FLAT
+SLP,False,SLP,Float,"['Central', 'Bathymetry']",,False,0.1,Slope of beach,,,Beginner,SLP
+Xslp,False,Xlsp,Float,"['Central', 'Bathymetry']",Meters,False,0,x location to transition between flat depth and slope region.,Positive,,Beginner,Xslp
+BATHY_CORRECTION,False,BATHY_CORRECTION,Boolean,"['Central', 'Bathymetry']",,False,FALSE,Flag to using built in interative local smoothing scheme to bathymetry data,,,Beginner,BATHY_CORRECTION
+WaterLevel,False,WaterLevel,Float,"['Central', 'Bathymetry']",Meters,False,0,Additional water level to add/substract from still water level in bathymetry data,,,Beginner,WaterLevel
+TOTAL_TIME,False,TOTAL_TIME,Float,"['Central', 'Bathymetry']",seconds,True,,Total simulation time for run,Positive Definite,,Beginner,TOTAL_TIME
+PLOT_START_TIME,False,PLOT_START_TIME,Float,"['Central', 'Bathymetry']",seconds,False,0,Optional offset for initial start time of run,Positive,,Beginner,PLOT_START_TIME
+PLOT_INTV,False,PLOT_INTV,Float,"['Central', 'Bathymetry']",seconds,False,1,Time interval between wrtiting 2D field data to file,Positive Definite,,Beginner,PLOT_INTV
+SCREEN_INTV,False,SCREEN_INTV,Float,"['Central', 'Bathymetry']",seconds,False,1,Time interval between summary updates in log file output,Positive Definite,,Beginner,SCREEN_INTV
+INI_UVZ,False,INI_UVZ,Boolean,['Hot Start'],,False,FALSE,"Flag for using hot start mode. Allows specifiying initial free surface height (eta) and velocities (u, v) for run",,,Beginner,INI_UVZ
+BED_DEFORMATION,False,BED_DEFORMATION,Boolean,['Hot Start'],,False,FALSE,DEPRECATED?,,,Beginner,BED_DEFORMATION
+ETA_FILE,False,ETA_FILE,Path,['Hot Start'],,True,,Path to initial free surface height at grid points  to initialize run with,,,Beginner,ETA_FILE
+U_FILE,False,U_FILE,Path,['Hot Start'],,False,,"Optional path to initial x-direction velocities, u, at grid points  for hot start mode.",,,Beginner,U_FILE
+V_FILE,False,V_FILE,Path,['Hot Start'],,False,,"Optional path to initial y-direction velocities, v, at grid points  for hot start mode.",,,Beginner,V_FILE
+MASK_FILE,False,MASK_FILE,Path,['Hot Start'],,False,,DEPRECATED?,,,Beginner,MASK_FILE
+HotStartTime,False,HotStartTime,Float,['Hot Start'],seconds,False,0,Optional offset for initial start time of hot start run,Positive,,Beginner,HotStartTime
+OutputStartNumber,False,OutputStartNumber,Integer,['Hot Start'],,False,1,Optional offset number for field data file output numbers in hot start run,Positive,,Beginner,OutputStartNumber
+WAVEMAKER,False,WAVEMAKER,Enum,['Wave Maker'],,False,,Wave maker type to use in simulation,Range,"['LEF_SOL', 'WK_TIME', 'INI_SOL', 'N_WAVE', 'INI_REC', 'INI_GAU', 'INI_DIP', 'WK_REG', 'WK_IRR', 'TMA_1D', 'JON_1D', 'JON_2D', 'WK_NEW_DATA2D', 'WK_DATA2D', 'ABS', 'LEFT_BC_IRR']",Beginner,WAVEMAKER
+AMP,False,AMP,Float,['Wave Maker'],Meters,True,,,Positive Definite,,Beginner,AMP
+DEP,False,DEP,Float,['Wave Maker'],Meters,True,,,Positive Definite,,Beginner,DEP
+LAGTIME,False,LAGTIME,Float,['Wave Maker'],seconds,False,0,,Positive,,Beginner,LAGTIME
+NumWaveComp,False,NumWaveComp,Integer,['Wave Maker'],,True,,,Positive,,Beginner,NumWaveComp
+PeakPeriod,False,PeakPeriod,Float,['Wave Maker'],1/seconds,True,,,Positive,,Beginner,PeakPeriod
+WaveCompFile,False,WaveCompFile,Path,['Wave Maker'],,True,,,,,Beginner,WaveCompFile
+Xc_WK,False,Xc_WK,Float,['Wave Maker'],meters,True,,,Positive,,Beginner,Xc_WK
+Yc_WK,False,Yc_WK,Float,['Wave Maker'],meters,False,0,,Positive,,Beginner,Yc_WK
+DEP_WK,False,DEP_WK,Float,['Wave Maker'],meters,True,0,,Positive,,Beginner,DEP_WK
+Time_ramp,False,Time_ramp,Float,['Wave Maker'],seconds,False,0,,Positive,,Beginner,Time_ramp
+Delta_WK,False,Delta_WK,Float,['Wave Maker'],,False,0.5,,Positive Definite,,Beginner,Delta_WK
+Ywidth_WK,False,Ywidth_WK,Float,['Wave Maker'],meters,False,LARGE,,Positive,,Beginner,Ywidth_WK
+SolitaryPositiveDirection,False,SolitaryPositiveDirection,Boolean,['Wave Maker'],,False,TRUE,,,,Beginner,SolitaryPositiveDirection
+XWAVEMARKER,False,XWAVEMAKER,Float,['Wave Maker'],Meters,True,,,Positive,,Beginner,XWAVEMARKER
+x1_Nwave,False,x1_Nwave,Float,['Wave Maker'],Meters,True,,,Positive,,Beginner,x1_Nwave
+x2_Nwave,False,x2_Nwave,Float,['Wave Maker'],Meters,True,,,Positive,,Beginner,x2_Nwave
+a0_Nwave,False,a0_Nwave,Float,['Wave Maker'],,True,,,Positive,,Beginner,a0_Nwave
+gamma_Nwave,False,gamma_Nwave,Float,['Wave Maker'],,True,,,Positive,,Beginner,gamma_Nwave
+dep_Nwave,False,dep_Nwave,Float,['Wave Maker'],,True,,,Positive Definite,,Beginner,dep_Nwave
+Xc,False,Xc,Float,['Wave Maker'],Meters,True,,,Positive,,Beginner,Xc
+Yc,False,Yc,Float,['Wave Maker'],Meters,False,0,,Positive,,Beginner,Yc
+WID,False,WID,Float,['Wave Maker'],,True,,,,,Beginner,WID
+Tperiod,False,Tperiod,Float,['Wave Maker'],seconds,True,,,Positive Definite,,Beginner,Tperiod
+AMP_WK,False,AMP_WK,Float,['Wave Maker'],meters,True,,,Positive Definite,,Beginner,AMP_WK
+Theta_WK,False,Theta_WK,Float,['Wave Maker'],,False,0,,,,Beginner,Theta_WK
+FreqPeak,False,FreqPeak,Float,['Wave Maker'],Hertz,True,,,Positive Definite,,Beginner,FreqPeak
+FreqMin,False,FreqMin,Float,['Wave Maker'],Hertz,True,,,Positive Definite,,Beginner,FreqMin
+FreqMax,False,FreqMax,Float,['Wave Maker'],Hertz,True,,,Positive Definite,,Beginner,FreqMax
+Hmo,False,Hmo,Float,['Wave Maker'],Meters,True,,,Positive Definite,,Beginner,Hmo
+Nfreq,False,Nfreq,Integer,['Wave Maker'],,False,45,,Positive Definite,,Beginner,Nfreq
+Ntheta,False,Ntheta,Integer,['Wave Maker'],,False,24,,Positive Definite,,Beginner,Ntheta
+ThetaPeak,False,ThetaPeak,Float,['Wave Maker'],,False,0,,,,Beginner,ThetaPeak
+Sigma_Theta,False,Sigma_Theta,Float,['Wave Maker'],,False,10,,Positive Definite,,Beginner,Sigma_Theta
+alpha_c,False,alpha_c,Float,['Wave Maker'],,False,0,,Positive,,Beginner,alpha_c
+EqualEnergy,False,EqualEnergy,Boolean,['Wave Maker'],,False,FALSE,,,,Beginner,EqualEnergy
+WAVE_DATA_TYPE,False,WAVE_DATA_TYPE,Enum,['Wave Maker'],,False,,,Range,"['ABS', 'DATA', 'TMA_1D', 'JON_1D', 'JON_2D']",Beginner,WAVE_DATA_TYPE
+DepthWaveMaker,False,DepthWaveMaker,Float,['Wave Maker'],,False,,,Positive Definite,,Beginner,DepthWaveMaker
+WidthWaveMaker,False,WidthWaveMaker,Float,['Wave Maker'],Meters,True,,,Positive Definite,,Beginner,WidthWaveMaker
+R_sponge_wavemaker,False,R_sponge_wavemaker,Float,['Wave Maker'],,True,,,Positive Definite,,Beginner,R_sponge_wavemaker
+A_sponge_wavemaker,False,A_sponge_wavemaker,Float,['Wave Maker'],,True,,,Positive Definite,,Beginner,A_sponge_wavemaker
+ETA_LIMITER,False,ETA_LIMITER,Boolean,['Wave Maker'],,False,FALSE,,,,Beginner,ETA_LIMITER
+CrestLimit,False,CrestLimit,Float,['Wave Maker'],Meters,True,,,Positive Definite,,Beginner,CrestLimit
+TroughLimit,False,TroughLimit,Float,['Wave Maker'],Meters,True,,,Positive Definite,,Beginner,TroughLimit
+WaveMakerCd,False,WaveMakerCd,Float,['Wave Maker'],,False,,,,,Beginner,WaveMakerCd
+PERIODIC,False,PERIODIC,Boolean,"['Boundary Conditions', 'Periodic']",,False,FALSE,,,,Beginner,PERIODIC
+DIRECT_SPONGE,False,DIRECT_SPONGE,Boolean,"['Boundary Conditions', 'Sponge Layer']",,False,FALSE,,,,Beginner,DIRECT_SPONGE
+DIFFUSION_SPONGE,False,DIFFUSION_SPONGE,Boolean,"['Boundary Conditions', 'Sponge Layer']",,False,FALSE,,,,Beginner,DIFFUSION_SPONGE
+Csp,False,Csp,Float,"['Boundary Conditions', 'Sponge Layer']",,False,0.1,,Positive,,Beginner,Csp
+FRICTION_SPONGE,False,FRICTION_SPONGE,Boolean,"['Boundary Conditions', 'Sponge Layer']",,False,FALSE,,,,Beginner,FRICTION_SPONGE
+CDsponge,False,CDsponge,Float,"['Boundary Conditions', 'Sponge Layer']",,False,5,,Positive Definite,,Beginner,CDsponge
+Sponge_west_width,False,Sponge_west_width,Float,"['Boundary Conditions', 'Sponge Layer']",Meters,False,0,,Positive,,Beginner,Sponge_west_width
+Sponge_east_width,False,Sponge_east_width,Float,"['Boundary Conditions', 'Sponge Layer']",Meters,False,0,,Positive,,Beginner,Sponge_east_width
+Sponge_south_width,False,Sponge_south_width,Float,"['Boundary Conditions', 'Sponge Layer']",Meters,False,0,,Positive,,Beginner,Sponge_south_width
+Sponge_north_width,False,Sponge_north_width,Float,"['Boundary Conditions', 'Sponge Layer']",Meters,False,0,,Positive,,Beginner,Sponge_north_width
+R_sponge,False,R_sponge,Float,"['Boundary Conditions', 'Sponge Layer']",,False,0.85,,Positive Definite,,Beginner,R_sponge
+A_sponge,False,A_sponge,Float,"['Boundary Conditions', 'Sponge Layer']",,False,5,,Positive Definite,,Beginner,A_sponge
+OBSTACLE_FILE,False,OBSTACLE_FILE,Path,['Obstacle and Breakwater'],,False,,,,,Beginner,OBSTACLE_FILE
+BREAKWATER_FILE,False,BREAKWATER_FILE,Path,['Obstacle and Breakwater'],,False,,,,,Beginner,BREAKWATER_FILE
+BreakWaterAbsorbCoef,False,BreakWaterAbsorbCoef,Float,['Obstacle and Breakwater'],,False,10,,,,Beginner,BreakWaterAbsorbCoef
+DISPERSION,False,DISPERSION,Boolean,"['Central', 'Physics']",,False,TRUE,,,,Beginner,DISPERSION
+Gamma1,False,Gamma1,Float,"['Central', 'Physics']",,False,1,,Positive,,Beginner,Gamma1
+Gamma2,False,Gamma2,Float,"['Central', 'Physics']",,False,1,,Positive,,Beginner,Gamma2
+Beta_ref,False,Beta_ref,Float,"['Central', 'Physics']",,False,-0.531,,,,Beginner,Beta_ref
+Gamma3,False,Gamma3,Float,"['Central', 'Physics']",,False,1,,Positive,,Beginner,Gamma3
+FRICTION_MATRIX,False,FRICTION_MATRIX,Boolean,"['Central', 'Physics']",,False,FALSE,,,,Beginner,FRICTION_MATRIX
+FRICTION_FILE,False,FRICTION_FILE,Path,"['Central', 'Physics']",,True,,,,,Beginner,FRICTION_FILE
+Cd,False,Cd,Float,"['Central', 'Physics']",,False,0,,Positive,,Beginner,Cd
+Time_Scheme,False,Time_Scheme,Enum,"['Central', 'Numerics']",,False,Runge_Kutta,,Range,"['Runge_Kutta', 'Predictor_Corrector']",Beginner,Time_Scheme
+CONSTRUCTION,False,CONSTRUCTION,Enum,"['Central', 'Numerics']",,False,HLLC,,Range,['HLLC'],Beginner,CONSTRUCTION
+HIGH_ORDER,False,HIGH_ORDER,Enum,"['Central', 'Numerics']",,False,FOURTH,,Range,"['FOURTH', 'THIRD']",Beginner,HIGH_ORDER
+CFL,False,CFL,Float,"['Central', 'Numerics']",,False,0.5,,Positive Definite,,Beginner,CFL
+FIXED_DT,False,FIXED_DT,Boolean,"['Central', 'Numerics']",,False,FALSE,,,,Beginner,FIXED_DT
+FroudeCap,False,FroudeCap,Float,"['Central', 'Numerics']",,False,3,,Positive Definite,,Beginner,FroudeCap
+MinDepth,False,MinDepth,Float,"['Central', 'Numerics']",Meters,False,0.1,,Positive Definite,,Beginner,MinDepth
+MinDepthFrc,False,MinDepthFrc,Float,"['Central', 'Numerics']",Meters,False,0.1,,Positive Definite,,Beginner,MinDepthFrc
+OUT_Time,False,OUT_Time,Boolean,"['Central', 'Numerics']",,False,FALSE,,,,Beginner,OUT_Time
+ArrTimeMin,False,ArrTimeMin,Float,"['Central', 'Numerics']",Meters,False,0.001,,,,Beginner,ArrTimeMin
+NumberStations,False,NumberStations,Integer,['Stations'],,False,0,,Positive,,Beginner,NumberStations
+PLOT_INTV_STATION,False,PLOT_INTV_STATION,Float,['Stations'],seconds,False,1,,Positive Definite,,Beginner,PLOT_INTV_STATION
+StationOutputBuffer,False,StationOutputBuffer,Integer,['Stations'],,False,1000,,Positive Definite,,Beginner,StationOutputBuffer
+STATIONS_FILE,False,STATIONS_FILE,Path,['Stations'],,True,,,,,Beginner,STATIONS_FILE
+ROLLER_EFFECT,False,ROLLER_EFFECT,Boolean,['Wave Breaking'],,False,FALSE,,,,Beginner,ROLLER_EFFECT
+VISCOSITY_BREAKING,False,VISCOSITY_BREAKING,Boolean,['Wave Breaking'],,False,TRUE,,,,Beginner,VISCOSITY_BREAKING
+SHOW_BREAKING,False,SHOW_BREAKING,Boolean,['Wave Breaking'],,False,TRUE,,,,Beginner,SHOW_BREAKING
+SWE_ETA_DEP,False,SWE_ETA_DEP,Float,['Wave Breaking'],,False,0.8,,,,Beginner,SWE_ETA_DEP
+Cbrk1,False,Cbrk1,Float,['Wave Breaking'],,False,0.45,,,,Beginner,Cbrk1
+Cbrk2,False,Cbrk2,Float,['Wave Breaking'],,False,0.35,,,,Beginner,Cbrk2
+WAVEMAKER_Cbrk,False,WAVEMAKER_Cbrk,Float,['Wave Breaking'],,False,1,,,,Beginner,WAVEMAKER_Cbrk
+WAVEMAKER_VIS,False,WAVEMAKER_VIS,Boolean,['Wave Breaking'],,False,FALSE,,,,Beginner,WAVEMAKER_VIS
+visbrk,False,visbrk,Float,['Wave Breaking'],,True,,,,,Beginner,visbrk
+WAVEMAKER_visbrk,False,WAVEMAKER_visbrk,Float,['Wave Breaking'],,True,,,,,Beginner,WAVEMAKER_visbrk
+VESSEL,False,VESSEL,Flag,['Vessel'],,False,FALSE,,,,Beginner,VESSEL
+VESSEL_FOLDER,False,VESSEL_FOLDER,Path,['Vessel'],,False,./,,,,Beginner,VESSEL_FOLDER
+NumVessel,False,NumVessel,Integer,['Vessel'],,False,0,,Positive,,Beginner,NumVessel
+DEEP_DRAFT_VESSEL,False,DEEP_DRAFT_VESSEL,Flag,['Deep Draft'],,False,FALSE,,,,Beginner,DEEP_DRAFT_VESSEL
+CLEARANCE,False,CLEARANCE,Float,['Deep Draft'],,False,1,,Positive,,Beginner,CLEARANCE
+MaskMethod,False,MaskMethod,Boolean,['Deep Draft'],,False,FALSE,,,,Beginner,MaskMethod
+FrictionMethod,False,FrictionMethod,Boolean,['Deep Draft'],,False,FALSE,,,,Beginner,FrictionMethod
+CdDeepDraft,False,CdDeepDraft,Float,['Deep Draft'],,True,,,Positive Definite,,Beginner,CdDeepDraft
+ViscosityMethod,False,ViscosityMethod,Boolean,['Deep Draft'],,False,FALSE,,,,Beginner,ViscosityMethod
+VisDeepDraft,False,VisDeepDraft,Float,['Deep Draft'],,True,,,Positive,,Beginner,VisDeepDraft
+SEDIMENT,False,SEDIMENT,Flag,['Sediment'],,False,FALSE,,,,Beginner,SEDIMENT
+Sed_Scheme,False,Sed_Scheme,Enum,['Sediment'],,False,Upwinding,Numerical scheme for sediment transport equation,Range,"['Upwinding', 'TVD']",Beginner,Sed_Scheme
+PLOT_INTV_SEDIMENT,False,PLOT_INTV_SEDIMENT,Float,['Sediment'],Seconds,False,,Plot interval between sediment 2D field outputs,Positive Definite,,Beginner,PLOT_INTV_SEDIMENT
+CohesiveSediment,False,CohesiveSediment,Boolean,['Sediment'],,False,FALSE,Swap between coehesive (T) and non-cohesive (F) sediment ,,,Beginner,CohesiveSediment
+D50,False,D50,Float,"['Sediment', 'Physics']",Meters,False,0.000005,Median grain diameter of sediment,Positive Definite,,Beginner,D50
+Sdensity,False,Sdensity,Float,"['Sediment', 'Physics']",Meters/second^2,False,2.68,Gravity of sediment,Positive Definite,,Beginner,Sdensity
+n_porosity,False,n_porosity,Float,"['Sediment', 'Physics']",,False,0.47,Porosity of sediment,Positive Definite,,Beginner,n_porosity
+WS,False,WS,Float,"['Sediment', 'Physics']",Meters/second ,False,0.125,Settling velocity,Positive Definite,,Beginner,WS
+Shields_cr,False,Shields_cr,Float,"['Sediment', 'Physics']",Radians,False,0.05,Shields parameter for suspended load,Positive Definite,,Beginner,Shields_cr
+Shields_cr_bedload,False,Shields_cr_bedload,Float,"['Sediment', 'Physics']",Radians,False,0.047,Shields parameter for bedload based on Meyer-Peter and Muller (1984),Positive Definite,,Beginner,Shields_cr_bedload
+Kappa1,False,Kappa1,Float,"['Sediment', 'Numerics']",,False,0.3333,Runge-Kutta parameter kappa1 for sediment transport solver,Positive Definite,,Beginner,Kappa1
+Kappp2,False,Kappp2,Float,"['Sediment', 'Numerics']",,False,1,Runge-Kutta parameter kappa2 for sediment transport solver,Positive Definite,,Beginner,Kappp2
+MinDepthPickup,False,MinDepthPickup,Float,"['Sediment', 'Numerics']",Meters,False,0.1,The minimum depth for sediment pickup action. The purpose of this parameter is to avoid over-shooting at a very small depth,Positive,,Beginner,MinDepthPickup
+k_coh,False,k_coh,Float,"['Sediment', 'Physics']",,False,0.000001,Diffusion coefficien,Positive Definite,,Beginner,k_coh
+Tau_cr_coh,False,Tau_cr_coh,Float,"['Sediment', 'Physics']",Radians,False,0.001,Critical shear stress for erosion,Positive Definite,,Beginner,Tau_cr_coh
+Tau_crd_coh,False,Tau_crd_coh,Float,"['Sediment', 'Physics']",Radians,False,0.001,Critical shear stress for deposition,Positive Definite,,Beginner,Tau_crd_coh
+a_coh,False,a_coh,Float,"['Sediment', 'Physics']",,False,0.1,Empirical parameter used to calculate settling velocity.,Positive Definite,,Beginner,a_coh
+b_coh,False,b_coh,Float,"['Sediment', 'Physics']",,False,2,Empirical parameter used to calculate settling velocity.,Positive Definite,,Beginner,b_coh
+n_coh,False,n_coh,Float,"['Sediment', 'Physics']",,False,0.5,Empirical parameter used to calculate settling velocity.,Positive Definite,,Beginner,n_coh
+m_coh,False,m_coh,Float,"['Sediment', 'Physics']",,False,1.5,Empirical parameter used to calculate settling velocity.,Positive Definite,,Beginner,m_coh
+E_coh,False,E_coh,Float,"['Sediment', 'Physics']",,False,0.0001,Erodibility parameter,Positive Definite,,Beginner,E_coh
+alpha_coh,False,alpha_coh,Float,"['Sediment', 'Physics']",,False,1,Coefficient used to calculate the erosion rate for soft bed,Positive Definite,,Beginner,alpha_coh
+SoftBed,False,SoftBed,Boolean,"['Sediment', 'Physics']",,False,TRUE,????,,,Beginner,SoftBed
+Bed_Change,False,Bed_Change,Boolean,"['Sediment', 'Morphology']",,False,TRUE,Update bathymetry based on sediment transport,,,Beginner,Bed_Change
+Hard_bottom,False,Hard_bottom,Boolean,"['Sediment', 'Morphology']",,False,FALSE,Turns on/off erosion ,,,Beginner,Hard_bottom
+Hard_bottom_file,False,Hard_bottom_file,Path,"['Sediment', 'Morphology']",,False,,Path to text file containing thickiness in meters of erodible bed at each grid point,,,Beginner,Hard_bottom_file
+Morph_step,False,Morph_step,Integer,"['Sediment', 'Morphology']",,False,25,Ratio of Boussinesq model time steps to the morphological updating step,Positive Definite,,Beginner,Morph_step
+Avalanche,False,Avalanche,Boolean,"['Sediment', 'Morphology']",,False,FALSE,Turns on/off avalanche calculations,,,Beginner,Avalanche
+Tan_phi,False,Tan_phi,Float,"['Sediment', 'Morphology']",Radians,False,0.7,Tangent of the repose angle,Positive Definite,,Beginner,Tan_phi
